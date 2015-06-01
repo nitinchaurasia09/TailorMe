@@ -1,0 +1,38 @@
+<div ng-controller="sidebar-ctrl">
+    <div class="scrollable">
+        <div class="scrollable-header search-form-section">
+            <div class="search-form-heading">
+                <h4>Search Taillor</h4>
+            </div>
+			
+			<form class="search-form" role="search">
+				<div id="search" class="filter-parent">
+				  <label for="filter-by"><a href="#/tailorlisting/{{tailorNameSearch}}/{{latitude}}/{{longitude}}"><i class="fa fa-search"></i></a></label>
+				  <div style="position: relative; height: 46px; display: block;">
+					<input tabindex="-1" class="form-control  hint" style="position: absolute;">
+              <button type="submit" ng-click='submitsearchform("/tailorlisting/{{tailorNameSearch}}/{{latitude}}/{{longitude}}")' style="width:1px;height:1px;display:none" />
+					<input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q"></div>
+				</div>
+			</form>
+        </div>
+				
+        <div class="scrollable-content">
+            <div class="search-list-group" ng-repeat="feature in FeaturesAndCategory">
+                <a id="{{ 'aFeature-' + $index }}" href="javascript:;" class="search-list-group-item" ng-click="expand('aFeature-'+$index, 'divFeature-' + $index,'iFeature-' + $index )">
+                    <span class="tailor-icon {{feature.FontName}}"></span>
+                    {{feature.FeatureName}}<i id="{{ 'iFeature-' + $index }}" class="fa-fw fa fa-plus"></i>
+                </a>
+                <div id="{{ 'divFeature-' + $index }}" class="hide">
+                    <ul class="search-list-sub-group" ng-repeat="category in feature.CategoryList">
+                        <li class="timeline">
+                            <a href="#/tailorlisting/{{feature.GUID}}/{{category.GUID}}/{{latitude}}/{{longitude}}">
+                                {{category.CategoryName}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<div id="myDetailPage" class="tailor-app-inner-bg">
+    <div class="scrollable">
+        <!--<div class="scrollable-header">
+            <div class="tailor-listing-search">
+                <form class="search-form" role="search">
+                    <div id="search" class="filter-parent">
+                        <label for="filter-by"><a href="javascript:;" class="search-btn" ng-click="searchTailorbyName(tailorNameSearch)"><i class="fa fa-search"></i></a></label>
+                        <div style="position: relative; height: 46px; display: block;">
+                            <input tabindex="-1" class="form-control  hint" style="position: absolute;">
+                            <input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q">
+                        </div>
+                    </div>
+                </form>
+                <div class="search-location"><i class="fa fa-map-marker fa-2x"></i></div>
+            </div>
+        </div>-->
+
+        <div class="scrollable-content my-detail">
+
+            <div class="vertical-center">
+                <div class="profile-image">
+                    <img src="{{UserDetail.UserImage}}" class="" />
+                </div>
+                <div class="name">{{UserDetail.FirstName}} {{UserDetail.LastName}}</div>
+            </div>
+
+            <div class="mydetail-form">
+                <form role="form">
+                    <div class="form-group">
+                        <label>Name</label><span>{{UserDetail.FirstName}} {{UserDetail.LastName}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label><span>{{UserDetail.UserEmail}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label><span>{{UserDetail.UserPhone}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label><span>{{UserDetail.UserLocation}}</span>
+                    </div>
+                    <div class="form-group mydetail-form">
+                        <label>&nbsp;</label>
+                        <span>
+                            <button type="button" ng-click="ShowEditDetail()" class="btn btn-primary-small">Edit Details</button>
+                            <a class="btn btn-primary-small" href="#/changePassword">Change Password?</a>
+                        </span>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="editDetailPage" class="tailor-app-inner-bg">
+    <div class="scrollable">
+        <div class="scrollable-content my-detail">
+            <div class="vertical-center">
+                <div class="profile-image">
+                    <img src="{{UserDetail.UserImage}}" class="" />
+                </div>
+                <div class="name">{{UserDetail.FirstName}} {{UserDetail.LastName}}</div>
+            </div>
+            <div class="mydetail-form">
+                <form name="form" role="form">
+                    <fieldset>
+                        <div class="form-group has-success has-feedback">
+                            <label>UserName</label>
+                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="UserDetail.UserName" placeholder="Name" />
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <label>First Name</label>
+                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="UserDetail.FirstName" placeholder="First Name" />
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <label>Last Name</label>
+                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="UserDetail.LastName" placeholder="Last Name" />
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id="txtEmail" name="txtEmail" type="email"
+                                   class="form-control"
+                                   data-ng-model="UserDetail.UserEmail"
+                                   placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input id="txtPhone" name="txtPhone" type="text"
+                                   class="form-control"
+                                   data-ng-model="UserDetail.UserPhone"
+                                   placeholder="Phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input id="txtAddress" name="txtAddress" type="text"
+                                   class="form-control"
+                                   data-ng-model="UserDetail.UserLocation"
+                                   placeholder="Address" multiple>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" data-ng-click="editDetail(UserDetail)" class="btn btn-primary btn-lg btn-block">Edit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

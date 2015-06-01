@@ -1,0 +1,128 @@
+﻿<!--- Tailor Details Page -- ><!-- Start of Scrollable content -->
+<style>
+     html, body{
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+    } 
+    #map {
+    height:200px;
+    width:100%;
+}
+    .infoWindowContent {
+        font-size:  14px !important;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+    }  
+</style>
+
+<div class="scrollable">
+    <div class="scrollable-header"> </div>
+    <div class="scrollable-content">
+
+
+        <div class="tailor-detail-upper" ng-if="TailorDetail != null">
+            <div class="tailor-detail-upper-body text-center">
+                <div class="text-center name-box"><img width="50" height="50" src="{{TailorDetail.TailorImage}}" /></div>
+                <p class="name">{{TailorDetail.TailorName}}</p>
+                <p class="ratings">
+                    <div>
+                        <div star-rating rating-value="TailorDetail.AverageRating" max="5"></div>
+                    </div>
+                </p>
+                <div class="icon-group">
+                    <a class="icon" href="tel:{{TailorDetail.TailorPhone}}"><i class="fa fa-phone fa-2x"></i></a>
+                    <a class="icon"><i class="fa fa-envelope-o fa-2x"></i></a>
+                    <a class="icon" ng-click="AddtoWishList('{{TailorDetail.GUID}}','{{globals.currentUser.guid}}','{{TailorDetail.TailorName}}','{{TailorDetail.TailorAddress}}','{{TailorDetail.AverageRating}}','{{TailorDetail.TailorImage}}')"><i class="fa fa-heart-o fa-2x"></i></a>
+                    <!--<a class="icon"><i class="fa fa-heart-o fa-2x"></i></a>-->
+                </div>
+            </div>
+            <div class="tailor-detail-upper-footer">
+                <div class="location text-center">
+                    <span class="vertical-center"><i class="fa fa-map-marker pull-left fa-2x"></i>&nbsp;{{TailorDetail.TailorAddress}} {{TailorDetail.TailorCity}}</span>
+                </div>
+                <div class="distance text-center">
+                    <span class="vertical-center">
+                        <i class="fa fa-location-arrow pull-left fa-2x"></i><span class="distance-number">&nbsp;{{(TailorDetail.Distance).toFixed(2)}}  km </span> <span class"">Away</span>
+                    </span>
+                </div>
+				
+				
+            </div>
+			
+        </div>
+
+        <div class="tailor-detail-bottom">
+			<div class="deals">
+				<!--<img src="images/icons/deal-tag.png" />
+							
+			  <span class="font-bold">40% Off </span> <span class="font-normal font-light"> formal wears </span>-->
+                <p class="write-your-review">Deals</p>
+                <div>
+                    <div class="row" ng-repeat="deal in TailorDeals">
+                        <div class="col-sm-6">{{deal.DealPercentage}}% Off</div>
+                        <div class="col-sm-6">{{deal.DealDescription}}</div>
+                    </div>
+                    <div ng-if="TailorDeals.length==0">
+                        No Deals Available
+                    </div>
+                </div> 
+            </div>
+			
+			<!--<div class="exp-deals">
+				<img src="images/icons/Exp-deal-tag.png" /> 
+			  <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
+                
+            </div>-->
+			
+            <div class="portfolio">
+                <p class="title">Portfolio By <span class="name">{{TailorDetail.TailorName}}</span></p>
+                <div class="portfolio-images-group">
+                    <div class="portfolio-images">
+                        <div ng-repeat="gal in TailorDetail.GalleryList" class="portfolio-images-thumbnail" ng-click="toggleModal()">
+                            <img src="{{gal.GalleryImage}}" class="gallery-image-thumb" />
+                        </div>
+                    </div>
+                    <div class="portfolio-images-count text-center">
+                        <span>{{TailorDetail.GalleryList.length}}</span> <span class="new-line">Photos</span>
+                    </div>
+                    <div class="portfolio-images-btn text-center">
+                        <a href="#/tailorgallery/{{TailorDetail.GUID}}"><img class="view-more-plus" src="images/icons/view-more-plus.png"></a>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="reviews">
+                <p class="title">Reviews</p>
+                <div class="reviews-list">
+                    <div class="reviews-list-item" ng-repeat="rev in TailorDetail.ReviewList">
+                        <div class="review-image">
+                            <div class="review-image-content">
+                                <img src="{{rev.UserImage}}" class="" />
+                            </div>
+                        </div>
+                        <div class="review-callout">
+                            <p class="name">{{rev.ReviewTitle}}</p>
+                            {{rev.Comment}}
+                        </div>
+                    </div>
+                    <div class="reviews-list-item" ng-if="TailorDetail.ReviewList.length==0">
+                        No Review Found
+                    </div>
+                    
+                </div>
+				<div class="write-your-review"><a href="#/review/{{TailorDetail.GUID}}">Write your review</a></div>
+                <div id="map"></div>
+                    <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+                        <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+                    </div>
+                <div class="write-your-review">Direction</div>
+				<!--<div class="review-map" id="map-canvas">
+                </div>-->
+               
+            </div>
+            <!-- Closing of Scrollable -content-->
+        </div>
+    </div>
+</div>

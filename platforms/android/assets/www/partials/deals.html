@@ -1,0 +1,31 @@
+﻿<div id="tailorListingPage" class="tailor-app-inner-bg">
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div ng-repeat="Tailor in AllDeals">
+                <div class="tailor-listing position-center" id="{{ 'lstTail-' + $index }}">
+                    <span class="tailor-details">
+                        <div class="tailor-details-content">
+                            <div class="tailor-image">
+                                <div class="tailor-image-content">
+                                    <img src="{{Tailor.TailorImage}}" class="" />
+                                </div>
+                            </div>
+                            <div class="tailor-details-text">
+                                <div class="info">
+                                    <p class="name"><a href="#/tailordetail/{{Tailor.TailorId}}/{{latitude}}/{{longitude}}" style="cursor:hand">{{Tailor.TailorName}}</a></p>
+                                    <p class="address">{{Tailor.TailorEmail}}</p>
+                                    <p class="address">{{Tailor.DealPercentage}}% OFF</p>
+                                    <p class="address">{{Tailor.DealDescription}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+            <div ng-if="AllDeals.length==0" class="text-center">
+                No Deals Available
+            </div>
+        </div>
+
+    </div>
+</div>

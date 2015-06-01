@@ -1,0 +1,51 @@
+<div id="wishlist" class="tailor-app-inner-bg" >
+	<div class="scrollable">
+        <!--<div class="scrollable-header">
+			   <div class="tailor-listing-search">
+						<form class="search-form" role="search">
+							<div id="search" class="filter-parent">
+							  <label for="filter-by"><a href="javascript:;" class="search-btn" ng-click="searchTailorbyName(tailorNameSearch)"><i class="fa fa-search"></i></a></label>
+							  <div style="position: relative; height: 46px; display: block;">
+								<input tabindex="-1" class="form-control  hint" style="position: absolute;">
+								<input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q"></div>
+							</div>
+						</form>
+						<div class="search-location"><i class="fa fa-map-marker fa-2x"></i></div>
+				</div>            
+		</div>-->
+	
+        <div class="scrollable-content" ng-if="Wishlists!=null">
+            <div ng-repeat="Wishlist in Wishlists">
+                <div class="tailor-listing position-center" id="{{ 'lstTail-' + $index }}">
+                    <span class="tailor-details">
+                        <div class="tailor-details-content">
+                            <div class="tailor-image">
+                                <div class="tailor-image-content">
+                                    <img src="{{Wishlist.TailorImage}}" class="" />
+                                </div>
+                            </div>
+                            <div class="tailor-details-text">
+                                <div class="info">
+                                    <p class="name"><a href="#/tailordetail/{{Wishlist.GUID}}/{{latitude}}/{{longitude}}" style="cursor:hand">{{Wishlist.TailorName}}</a></p>
+                                    <p class="address">{{Wishlist.TailorAddress}}</p>
+                                    <p class="ratings">
+                                        <div>
+                                            <div star-rating rating-value="Wishlist.AverageRating" max="5"></div>
+                                        </div>
+                                    </p>
+                                    <p class="address">{{Wishlist.TailorCity}} {{Wishlist.StateName}} {{Wishlist.CountryName}}</p>
+                                    <p class="address">{{Wishlist.TailorPhone}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deal-tag"><img src="images/icons/deal-tag.png" class="deal-tag-mage" /></div>
+                    </span>
+                </div>
+            </div>
+            <div ng-if="Wishlists.length==0" class="text-center">
+                No Record Found
+            </div>
+        </div>
+
+	</div>
+</div>

@@ -1,0 +1,54 @@
+<style type="text/css">
+       
+        #Submit1
+        {
+            width: 316px;
+            height: 31px;
+        }
+        #div_image
+        {
+            width: 665px;
+        }
+     
+        #Txt_Phone
+        {
+            width: 316px;
+            height: 31px;
+        }
+        #Txt_address
+        {
+            width: 316px;
+            height: 31px;
+        }
+        #Txt_Name
+        {
+            width: 316px;
+            height: 31px;
+        }
+        #Txt_Email
+        {
+           width: 316px;
+            height: 31px;
+        }
+    </style>
+
+
+<div id="div_image" align="left" >
+<img src="tailor.jpg" alt="Change Password" />
+</div> 
+<div id="div_changePass" align="left">
+    <fieldset style="width: 352px; height: 305px">
+        <label><font color="#20B2AA"><b>Name</b></font></label>
+        <label><font color="#20B2AA"><b>{{login.name}}</b> </font></label><br />
+        <label> <font color="#20B2AA"><b>Email </b></font></label>
+        &nbsp;<label><font color="#20B2AA"><b>{{login.email}}</b> </font><br /></label><br />
+        <label><font color="#20B2AA"><b>Phone</b> </font> </label>
+        &nbsp;<label><font color="#20B2AA"><b>{{login.phone}}</b> </font><br /></label><br />
+        <label> <font color="#20B2AA"><b>Address </b></font> </label>
+        &nbsp;<label><font color="#20B2AA"><b>{{login.address}}</b> </font><br /></label><br />
+        <b><input id="Submit1" type="button" data-ng-click="" class="btn btn-primary btn-lg btn-block" value="Edit Detail" /></b>
+        <b><input id="Submit2" type="button" data-ng-click="" class="btn btn-primary btn-lg btn-block" value="Change Password" /></b>
+
+    </fieldset>
+
+</div>

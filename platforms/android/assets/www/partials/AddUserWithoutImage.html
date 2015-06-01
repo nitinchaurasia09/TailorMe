@@ -1,0 +1,61 @@
+<div id="AddDetailPage" class="tailor-app-inner-bg">
+    <div class="scrollable">
+        <div class="scrollable-content my-detail">
+            
+            <div class="mydetail-form">
+                <form name="form" role="form">
+                    <fieldset>
+                        
+                        <div class="form-group has-success has-feedback">
+                            <label>User Name</label>
+                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="user.name" placeholder="Name" />
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <label>First Name</label>
+                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="user.fname" placeholder="First Name" />
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <label>Last Name</label>
+                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="user.lname" placeholder="Last Name" />
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <label>Password</label>
+                            <input type="password" id="txtPass" name="txtPass" class="form-control" ng-model="user.pass" placeholder="Password" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id="txtEmail" name="txtEmail" type="email"
+                                   class="form-control"
+                                   data-ng-model="user.email"
+                                   placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input id="txtPhone" name="txtPhone" type="text"
+                                   class="form-control"
+                                   data-ng-model="user.phone"
+                                   placeholder="Phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input id="txtAddress" name="txtAddress" type="text"
+                                   class="form-control"
+                                   data-ng-model="user.address"
+                                   placeholder="Address" multiple>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" data-ng-click="addDetail(user)" class="btn btn-primary btn-lg btn-block">Add</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  

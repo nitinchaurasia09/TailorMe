@@ -1,0 +1,98 @@
+ <!-- Write Review-->
+<div class="scrollable">
+  
+    <div class="scrollable-content">
+
+		<div id="write-review">
+			
+			<!--<div class="tap-to-rate">
+				<p>Tap to rate tailor </p>
+				<div class="star">Star Star Star star star</div>
+				<input id="input-2" class="rating" data-min="0" data-max="5" data-step="0.1">
+			</div> -->
+			
+			<div class="write-review-form">
+				<form role="form" ng-submit=''>
+					<!--<fieldset>
+						<div class="form-group has-success has-feedback">
+							<input type="name"
+								   ng-model="review.title"
+								   class="form-control"
+								   placeholder="Your Name" />
+						</div>
+						<div class="form-group has-success has-feedback">
+							<textarea class="form-control" ng-model="review.comment" rows="3" placeholder="Add your Comment"></textarea>
+						</div>
+					</fieldset> -->
+					
+					<fieldset>
+						<div class="form-group has-success has-feedback">
+						  <input type="name"
+								 ng-model="review.name"
+								 class="form-control"
+								 placeholder="Your Name">
+						</div>
+
+						<div class="form-group has-success has-feedback">
+						  <input type="email"
+								 ng-model="review.email"
+								 class="form-control"
+								 placeholder="Email">
+						</div>
+
+						 <textarea class="form-control" ng-model="review.comment"rows="3" placeholder="Add your Comment"></textarea>
+
+					</fieldset> 
+
+					
+					<div class="form-group">
+						<div class="form-control tailor-quality">
+							<p>Tailor Quality</p>
+							<label class="radio-inline">
+								<input type="radio" name="inlineRadioOptions" data-ng-model="review.quality" id="qualityRadio1" value="5" /> Superfine
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="inlineRadioOptions" data-ng-model="review.quality" id="qualityRadio2" value="4" /> fine
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="inlineRadioOptions" data-ng-model="review.quality" id="qualityRadio3" value="3" /> Good
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="inlineRadioOptions" data-ng-model="review.quality" id="qualityRadio4" value="2" /> Bad
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="inlineRadioOptions" data-ng-model="review.quality" id="qualityRadio5" value="1" /> Poor
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="form-control tailor-timeline">
+							<p>Timeline</p>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" data-ng-model="review.timeline" id="timelineRadio1" value="option1"> 3 Days
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" data-ng-model="review.timeline" id="timelineRadio2" value="option2"> 1 Week
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" data-ng-model="review.timeline" id="timelineRadio3" value="option3"> 2 Weeks
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" data-ng-model="review.timeline" id="timelineRadio4" value="option4"> 3 Weeks
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" data-ng-model="review.timeline" id="timelineRadio5" value="option5"> Month
+							</label>
+						</div>	
+					</div>
+					
+					<button type="button" data-ng-click="writeReview(review)"  class="btn btn-primary btn-lg btn-block">Submit Review</button>				
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>	
+
+

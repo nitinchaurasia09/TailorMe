@@ -1,0 +1,133 @@
+<div id="login" ng-controller="login-ctrl">    
+    <script language="javascript" type="text/javascript">
+        var OAUTHURL = 'https://accounts.google.com/o/oauth2/auth?';
+        var VALIDURL = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
+        var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+        var CLIENTID = '743994815504-mjrd0f4ne8r1jm9ts6omsv3pp6vtnhdt.apps.googleusercontent.com';
+        var client_secret = 'UxNldQfK0QgQKvx6MhKrehZu';
+        var REDIRECT = 'http://localhost/index.html#/login';
+        var LOGOUT = 'http://accounts.google.com/Logout';
+        var TYPE = 'token';
+        var _url = OAUTHURL + 'scope=' + SCOPE + '&client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE;
+        var acToken;
+        var tokenType;
+        var expiresIn;
+        var user;
+        var loggedIn = false;
+        function login() {
+
+            var pollTimer = window.setInterval(function () {
+                var win = window.open(_url, "_self", 'width=800, height=600');
+                alert('Window Opende');
+                if (win != null) {
+                    alert('Condition 1');
+                    if (!win.closed) {
+                        alert('Condition 2');
+                        if (win.document.URL.indexOf(REDIRECT) != -1) {
+                            alert('Entered indexOf');
+                            window.clearInterval(pollTimer);
+                            alert('Clear');
+                            var url = win.document.URL;
+                            alert('AccessToken');
+                            acToken = gup(url, 'access_token');
+                            tokenType = gup(url, 'token_type');
+                            expiresIn = gup(url, 'expires_in');
+                            alert('Close');
+                            win.close();
+                            validateToken(acToken);
+                            return false;
+                        }
+                    }
+                }
+            }, 3000);
+        }
+        function validateToken(token) {
+            debugger;
+            $.ajax(
+        {
+            url: VALIDURL + token,
+            data: null,
+            success: function (responseText) {
+                getUserInfo();
+                loggedIn = true;
+                $('#loginText').hide();
+                $('#logoutText').show();
+            },
+            dataType: "jsonp"
+        });
+        }
+        function getUserInfo() {
+            debugger;
+            $.ajax({
+                url: 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + acToken,
+                data: null,
+                success: function (resp) {
+                    debugger;
+                    user = resp;
+                    console.log(user);
+                    $('#uName').text('Welcome ' + user.name);
+                    $('#imgHolder').attr('src', user.picture);
+                },
+                dataType: "jsonp"
+            });
+        }
+        //credits: http://www.netlobo.com/url_query_string_javascript.html
+
+        function gup(url, name) {
+            debugger;
+            namename = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\#&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(url);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+        function startLogoutPolling() {
+            debugger;
+            $('#loginText').show();
+            $('#logoutText').hide();
+            loggedIn = false;
+            $('#uName').text('Welcome ');
+            $('#imgHolder').attr('src', 'none.jpg');
+        }
+    </script>    
+   
+
+    <div class="scrollable">
+        <div class="scrollable-header"> </div>
+        <div class="scrollable-content"> 
+            <div class="login-form">
+                <form name="form" ng-submit="login()" role="form">
+                    <fieldset>
+                        <div class="form-group has-success has-feedback">
+                            <input type="email" id="username" name="username" class="form-control" ng-model="username" required placeholder="Email" />
+                            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" id="password" name="password" class="form-control" ng-model="password" required placeholder="Password" />
+                            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+                        </div>
+                    </fieldset>
+                    <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                    <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </form>
+                <div class="signup-form">
+                    <span class="new-user">New User ?</span> <a ng-href="#/register"><span class="sign-up">Sign up </span></a>
+                </div>
+
+                <a href='#' onclick='login();' id="loginText"> Google Plus </a>
+                <a href="#" temp_href="#" style="display:none" id="logoutText" target='myIFrame' onclick="myIFrame.location='https://www.google.com/accounts/Logout'; startLogoutPolling();return false;"> Click here to logout </a>
+                <iframe name='myIFrame' id="myIFrame" style='display:none'></iframe>
+                <div id='uName'></div>
+                <img src='' id='imgHolder' />  
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
