@@ -254,15 +254,24 @@ appCtrl.controller('sidebar-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '
         });
     }
 
-    webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
-        $rootScope.FeaturesAndCategory = data;
-    }).error(function (data) {
-        //alert('Error while retrieving categories -' + data);
-        toastr.error('Error while retrieving categories -' + data);
-    });
+    $scope.GetFeatures = function () {
+        
+        webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
+            $rootScope.FeaturesAndCategory = data;
+        }).error(function (data) {
+            //alert('Error while retrieving categories -' + data);
+            toastr.error('Error while retrieving categories -' + data);
+        });
+    }
     $scope.submitsearchform = function (url) {
         $location.path(url);
     }
+    setInterval(function () {
+        if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
+            $scope.GetFeatures();
+        }
+    },10000);
+    
 }]);
 
 
