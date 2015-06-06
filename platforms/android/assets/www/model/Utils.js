@@ -42,5 +42,6 @@ var urlServerUtil = {
     WishListUrl: 'http://grasimapi.amplodis.com/api/WishList',
     TailorDealsUrl: 'http://grasimapi.amplodis.com/api/Utility/DealsByTailorId?',
     AllDealsUrl: 'http://grasimapi.amplodis.com/api/Utility/AllDeals',
-    GetLocationsUrl: 'http://grasimapi.amplodis.com/api/Utility/GetLocationsByName'
+    GetLocationsUrl: 'http://grasimapi.amplodis.com/api/Utility/GetLocationsByName',
+    PageDescriptionUrl: 'http://grasimapi.amplodis.com/api/Utility/GetPageByPageId?guid='
 }

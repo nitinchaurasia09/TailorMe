@@ -254,24 +254,15 @@ appCtrl.controller('sidebar-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '
         });
     }
 
-    $scope.GetFeatures = function () {
-        
-        webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
-            $rootScope.FeaturesAndCategory = data;
-        }).error(function (data) {
-            //alert('Error while retrieving categories -' + data);
-            toastr.error('Error while retrieving categories -' + data);
-        });
-    }
+    webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
+        $rootScope.FeaturesAndCategory = data;
+    }).error(function (data) {
+        //alert('Error while retrieving categories -' + data);
+        toastr.error('Error while retrieving categories -' + data);
+    });
     $scope.submitsearchform = function (url) {
         $location.path(url);
     }
-    setInterval(function () {
-        if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
-            $scope.GetFeatures();
-        }
-    },10000);
-    
 }]);
 
 
@@ -984,3 +975,16 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
 }]);
 
 
+appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+    webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '3', "{}").success(function (data, status, headers, config) {
+        $(".info").html(data[0].Description);
+    }).error(function (data) {
+        alert('help-ctrl - ' + data);
+    });
+}]);
+
+
+
+appCtrl.controller('contactus-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+    
+}]);
