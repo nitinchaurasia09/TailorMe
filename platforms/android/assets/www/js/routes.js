@@ -18,7 +18,7 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($r
     $routeProvider.when('/help', { templateUrl: 'partials/help.html', controller: 'help-ctrl', reloadOnSearch: false, title: '' });
 
     $routeProvider.when('/LocationSearch', { templateUrl: 'partials/LocationSearch.html', controller: 'location-ctrl', reloadOnSearch: false, title: '' });
-    $routeProvider.when('/aboutus', { templateUrl: 'partials/aboutus.html', controller: 'main-ctrl', reloadOnSearch: false, title: '' });
+    $routeProvider.when('/aboutus', { templateUrl: 'partials/aboutus.html', controller: 'about-ctrl', reloadOnSearch: false, title: '' });
 
     $routeProvider.when('/tailorlisting/:lat/:long', { templateUrl: 'partials/tailor-listing.html', controller: 'tailorListing-ctrl', reloadOnSearch: false, title: '' });
 

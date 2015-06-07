@@ -59,7 +59,7 @@ appCtrl.controller('location-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 
     webapi.Call('GET', urlServerUtil.GetLocationsUrl, "{}").success(function (data, status, headers, config) {
         var json = []
         for (var i = 0; i < data.length; i++) {
-            json.push({ "TailorName": data[i].TailorName, "Latitude": data[i].Latitude, "Longitude": data[i].Longitude })
+            json.push({ "TailorAddress": data[i].TailorAddress, "Latitude": data[i].Latitude, "Longitude": data[i].Longitude })
         }
         $scope.Location = json;
     }).error(function (data) {
@@ -984,7 +984,10 @@ appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
 }]);
 
 
-
-appCtrl.controller('contactus-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
-    
+appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+    webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '2', "{}").success(function (data, status, headers, config) {
+        $(".info").html(data[0].Description);
+    }).error(function (data) {
+        alert('help-ctrl - ' + data);
+    });
 }]);

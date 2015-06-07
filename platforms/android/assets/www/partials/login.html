@@ -43,17 +43,13 @@
             dataType: "jsonp"
         });
         }
-        function getUserInfo() {
-            debugger;
+        function getUserInfo() {            
             $.ajax({
                 url: 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + acToken,
                 data: null,
                 success: function (resp) {
-                    debugger;
                     user = resp;
                     console.log(user);
-                    $('#uName').text('Welcome ' + user.name);
-                    $('#imgHolder').attr('src', user.picture);
                 },
                 dataType: "jsonp"
             });
