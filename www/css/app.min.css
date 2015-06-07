@@ -9348,7 +9348,7 @@ h1 {
 
   border: 1px solid rgba(255, 255, 255, .3);
   -webkit-background-clip: padding-box; /* for Safari */
-  background-clip: padding-box; /* IE G -T*/
+  background-clip: padding-box; /* IE G -T - hi*/
   color:#fff;
   position: relative;
   margin-left: -7vh;
