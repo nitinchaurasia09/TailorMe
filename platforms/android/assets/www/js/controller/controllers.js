@@ -987,3 +987,11 @@ appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
         alert('help-ctrl - ' + data);
     });
 }]);
+
+appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+    webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.latitude + "&trend=1", "{}").success(function (data, status, headers, config) {
+        $rootScope.Tailors = data;
+    }).error(function (data) {
+        alert('searchTailorbyName 3-' + data);
+    });
+}]);
