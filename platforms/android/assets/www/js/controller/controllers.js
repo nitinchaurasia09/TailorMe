@@ -9,18 +9,6 @@ appCtrl.controller('main-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'Aut
         $rootScope.myDB = dbObj;
     }
 
-
-    //Code after facebook and google sign in
-    //var param = JSON.stringify({
-    //    ID: '1', FirstName: 'N', LastName: 'M', Email: 'nm@g.com', AccType: 'FB'
-    //});
-    //webapi.Call('POST', urlServerUtil.ExternalUserUrl, param).success(function (data, status, headers, config) {
-    //    if(data){
-    //     }    
-    //}).error(function (data) {
-    //    alert('Error-' + data);
-    //});
-
     $scope.logout = function () {
         $rootScope.showLogin = true;
         AuthenticationService.ClearCredentials();
