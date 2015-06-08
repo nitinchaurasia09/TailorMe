@@ -38,9 +38,21 @@ appCtrl.controller('main-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'Aut
 }]);
 
 appCtrl.controller('location-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'AuthenticationService', '$location', function ($scope, $http, webapi, $rootScope, AuthenticationService, $location) {
-
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            $scope.$apply(function () {
+                $rootScope.latitude = position.coords.latitude;
+                $rootScope.longitude = position.coords.longitude;
+            });
+        });
+    }
     $scope.redirectToTailorListing = function () {
-        window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude;
+        if (!navigator.onLine || ($rootScope.latitude == '')) {
+            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude;
+        }
+        else {
+            toastr.success('Location Service is not enable in your mobile.');
+        }
     }
 
     ///*******For autocomplete****************/
