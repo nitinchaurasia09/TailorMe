@@ -359,12 +359,6 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
             $scope.slides.push(jsonObject);
         }
 
-        /*    { image: 'images/deleteImages/img00.jpg', description: 'Image 00' },
-            { image: 'images/deleteImages/img01.jpg', description: 'Image 01' },
-            { image: 'images/deleteImages/img02.jpg', description: 'Image 02' },
-            { image: 'images/deleteImages/img03.jpg', description: 'Image 03' },
-            { image: 'images/deleteImages/img04.jpg', description: 'Image 04' }
-    ];*/
         $scope.direction = 'left';
         $scope.currentIndex = 0;
 
@@ -672,12 +666,10 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
         alert('user-detail-ctrl -' + data);
     });
     $scope.editDetail = function (user) {
-
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, UserName: user.UserName, UserEmail: user.UserEmail, UserPhone: user.UserPhone, UserLocation: user.UserLocation, FirstName: user.FirstName, LastName: user.LastName
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
-            // alert('User Updated Successfully');
             toastr.success('User Updated Successfully');
             webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
                 $scope.UserDetail = data[0];
@@ -705,14 +697,11 @@ appCtrl.controller('login-ctrl',
     ['$scope', '$http', '$rootScope', '$location', 'AuthenticationService', 'webapi',
     function ($scope, $http, $rootScope, $location, AuthenticationService, webapi) {
         $('.navbar-absolute-bottom').show();
-        // AuthenticationService.ClearCredentials();
-
         $scope.login = function () {
             $scope.dataLoading = true;
-
             webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
                 if (data != null && data != undefined && data != "null") {
-                    alert('Login Successfully');
+                    toastr.success('Login Successfully');
                     $rootScope.showLogin = false;
                     AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
                     if ($rootScope.previousRoute == undefined) {
@@ -722,7 +711,6 @@ appCtrl.controller('login-ctrl',
                         window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
                     }
                 } else {
-                    // alert('Invalid Credentials');
                     toastr.error('Invalid Credentials');
                     $scope.error = data.message;
                 }
@@ -731,134 +719,6 @@ appCtrl.controller('login-ctrl',
             });
             $scope.dataLoading = false;
         };
-
-        //Given by Sandeep///$rootScope.globals.currentUser.guid
-        //$scope.login = { userID: "", password: "", newpassword: "", repassword: "", email: "", phone: "", address: "" };
-        //$scope.getDetail = function () {
-        //    webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
-        //        
-        //        $scope.login = data;
-        //    });
-        //};
-
-        /**************************************************************************************/
-        /*
-
-        // This is called with the results from from FB.getLoginStatus().
-        var isLoggedIn = false;
-        function statusChangeCallback(response) {
-            alert('statusChangeCallbak');
-
-            if (response.status === 'connected') {
-                
-                // Logged into your app and Facebook.
-                //console.log(response.authResponse.accessToken);
-                $("#logout").show();
-                $("#login").hide();
-                
-                testAPI();
-                isLoggedIn = true;
-                
-               // document.getElementById('facebook').setAttribute('style', 'display: none');
-            } else if (response.status === 'not_authorized') {
-                document.getElementById('facebook').setAttribute('style', 'display: none');
-                // The person is logged into Facebook, but not your app.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                  'into this app.';
-            } else {
-                // The person is not logged into Facebook, so we're not sure if
-                // they are logged into this app or not.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                  'into Facebook.';
-            }
-        }
-        $("#logout").on('click', function () {
-            logout();
-
-        });
-        $scope.logout = function () {
-            gapi.auth.signOut();
-
-            if (isLoggedIn) {
-                FB.logout(function (response) {
-                    
-                    // Person is now logged out
-                    var isLoggedIn = false;
-                    $("#status").hide();
-                    document.getElementById('signinButton').setAttribute('style', 'display: block');
-                    //  document.getElementById('facebook').setAttribute('style', 'display: block');
-
-                });
-            }
-        }
-
-        $scope.checkLoginState =function() {
-            alert('chekLoginstate ng');
-            FB.getLoginStatus(function (response) {
-                
-                statusChangeCallback(response);
-                alert('from main - ' + isLoggedIn);
-                return isLoggedIn;
-            });
-        }
-
-        
-
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '781466591940188',
-                cookie: true,  // enable cookies to allow the server to access the session
-                xfbml: true,  // parse social plugins on this page
-                version: 'v2.1', // use version 2.1
-                channelUrl:'http://localhost:55264/index.html'
-            });
-
-
-
-            FB.getLoginStatus(function (response) {
-                
-                alert('getloginStatus alone');
-                statusChangeCallback(response);
-            });
-
-
-        };
-
-        // Load the SDK asynchronously
-        (function (d, s, id) {
-            
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        function testAPI() {
-            //console.log('Welcome!  Fetching your information.... ');
-            FB.api('/me', function (response) {
-                //console.log('Successful login for: ' + response.name);
-                //API hit sending response.id to save in db
-                
-                AuthenticationService.SetCredentials(response.id, response.name, response.email, 'fb');
-                if ($rootScope.previousRoute == undefined) {
-                    $location.path('/');
-                }
-                else {
-                    window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
-                }
-                document.getElementById('signinButton').setAttribute('style', 'display: none');
-               // document.getElementById('facebook').setAttribute('style', 'display: none');
-
-                document.getElementById('status').innerHTML =
-                  'Thanks for logging in, ' + response.name + '!';
-            });
-        }*/
-
-        /*********************************************************************************************/
-
-
-
     }]);
 
 
@@ -890,84 +750,14 @@ appCtrl.controller('review-ctrl',
 appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAuthenticated', '$location', function ($scope, $rootScope, webapi, checkAuthenticated, $location) {
     $scope.addDetail = function (user) {
         var param = JSON.stringify({
-            GUID: '', UserName: user.name, UserEmail: user.email, UserPhone: user.phone, UserLocation: user.address, FirstName: user.fname, LastName: user.lname, Password: user.pass, UserImage: user.UserImage
+            GUID: '', UserName: user.name, UserEmail: user.email, UserPhone: user.phone, UserLocation: user.address, FirstName: user.fname, LastName: user.lname, Password: user.pass, UserImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png'
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
-            //alert('User Added Successfully');
             toastr.success('User Added Successfully');
         }).error(function (data) {
             alert('addDetail -' + data);
         });
     };
-    var imageFromGallery;
-
-    $scope.capturePhoto = function () {
-        alert('take pic');
-        navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
-            quality: 50,
-            destinationType: destinationType.DATA_URL
-        });
-    };
-    $scope.capturePhotoEdit = function () {
-        alert('cap pic');
-        // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
-        navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
-            quality: 20, allowEdit: true,
-            destinationType: destinationType.DATA_URL
-        });
-    }
-    $scope.getPhoto = function (source) {
-        alert('get pic');
-        // Retrieve image file location from specified source
-        navigator.camera.getPicture(onPhotoURISuccess, onFail, {
-            quality: 50,
-            destinationType: destinationType.FILE_URI,
-            sourceType: source
-        });
-    }
-    $scope.selectPicture = function () {
-
-    };
-    $scope.uploadPicture = function () {
-
-    };
-    function onPhotoDataSuccess(imageData) {
-        // Uncomment to view the base64-encoded image data
-        // console.log(imageData);
-
-        // Get image handle
-        //
-        alert(imageData);
-        var smallImage = document.getElementById('smallImage');
-
-        // Unhide image elements
-        //
-        smallImage.style.display = 'block';
-
-        // Show the captured photo
-        // The in-line CSS rules are used to resize the image
-        //
-        smallImage.src = "data:image/jpeg;base64," + imageData;
-    }
-
-    function onPhotoURISuccess(imageURI) {
-        // Uncomment to view the image file URI
-        // console.log(imageURI);
-
-        // Get image handle
-        //
-        alert(imageURI);
-        var largeImage = document.getElementById('largeImage');
-
-        // Unhide image elements
-        //
-        largeImage.style.display = 'block';
-
-        // Show the captured photo
-        // The in-line CSS rules are used to resize the image
-        //
-        largeImage.src = imageURI;
-    }
 }]);
 
 
