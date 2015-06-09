@@ -12,7 +12,7 @@
     TailorDealsUrl: 'http://localhost:58938/api/Utility/DealsByTailorId?',
     AllDealsUrl: 'http://localhost:58938/api/Utility/AllDeals',
     GetLocationsUrl: 'http://localhost:58938/api/Utility/GetLocationsByName',
-    PageDescriptionUrl: 'http://grasimapi.amplodis.com/api/Utility/GetPageByPageId?guid='
+    PageDescriptionUrl: 'http://localhost:58938/api/Utility/GetPageByPageId?guid='
 }
 
 //var urlServerUtil = {

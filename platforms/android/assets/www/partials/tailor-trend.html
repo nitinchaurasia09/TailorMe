@@ -1,14 +1,30 @@
 <div id="tailorListingPage" class="tailor-app-inner-bg">
     <div class="scrollable">
+
+        <div class="scrollable-header">
+            <div class="tailor-listing-search">
+                <form class="search-form" role="search">
+                    <div id="search" class="filter-parent">
+                        <label for="filter-by"><a href="javascript:;" class="search-btn" ng-click="searchTailorbyName(tailorNameSearch)"><i class="fa fa-search"></i></a></label>
+                        <div style="position: relative; height: 46px; display: block;">
+                            <input tabindex="-1" class="form-control  hint" style="position: absolute;">
+                            <input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q">
+                        </div>
+                    </div>
+                </form>
+                <!--<div class="search-location"><i class="fa fa-map-marker fa-2x"></i></div>-->
+            </div>
+        </div>
+
         <div class="scrollable-content">
-            <div ng-repeat="Tailor in Tailors" class="kap1">
+            <div ng-repeat="Tailor in TrendTailors" class="kap1">
                 <div class="tailor-listing position-center" id="{{ 'lstTail-' + $index }}" ng-swipe-left="getSwipe('lstTail-' + $index, 'position-left', this)" ng-swipe-right="getSwipe('lstTail-' + $index,'position-right', this)">
                     <div class="tailor-distance">
                         <div class="tailor-distance-content">
                             {{Tailor.KiloMeter}} km <p>away</p>
                         </div>
                     </div>
-                    <div class="tailor-details">
+                    <span class="tailor-details">
                         <div class="tailor-details-content">
                             <div class="tailor-image">
                                 <div class="tailor-image-content">
@@ -17,27 +33,34 @@
                             </div>
                             <div class="tailor-details-text">
                                 <div class="info">
-                                    <p class="name"><a href="#/tailordetail/{{Tailor.GUID}}/{{latitude}}/{{longitude}}" style="cursor:hand">{{Tailor.TailorName}}</a></p>
-                                    <p class="address">{{Tailor.TailorAddress}}</p>
-                                    <p class="ratings">
-                                        <div>
-                                            <div star-rating rating-value="Tailor.AverageRating" max="5"></div>
-                                        </div>
-                                    </p>
-                                    <p class="address">{{Tailor.TailorCity}} {{Tailor.StateName}} {{Tailor.CountryName}}</p>
-                                    <!--<p class="address">{{Tailor.TailorPhone}}</p>                         --> <!-- Not required -->
+                                    <a href="#/tailordetail/{{Tailor.GUID}}/{{latitude}}/{{longitude}}" style="cursor:hand">
+                                        <p class="name">
+                                            {{Tailor.TailorName}}
+                                        </p>
+                                        <p class="address">{{Tailor.TailorAddress}}</p>
+                                        <p class="ratings">
+                                            <div>
+                                                <div star-rating rating-value="Tailor.AverageRating" max="5"></div>
+                                            </div>
+                                        </p>
+                                        <p class="address">{{Tailor.TailorCity}} {{Tailor.StateName}} {{Tailor.CountryName}}</p>
+                                        <!--<p class="address">{{Tailor.TailorPhone}}</p>-->
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div ng-if="Tailor.Deals=='TRUE'" class="deal-tag">
-                            <img src="images/icons/deal-tag.png" class="deal-tag-image" />
-                            <img src="images/icons/Exp-deal-tag.png" class="exp-deal-tag-image" />
+                        <div class="deal-tag">
+                            <img ng-if="Tailor.Deals=='TRUE'" src="images/icons/deal-tag.png" class="deal-tag-image" />
+                            <img ng-if="Tailor.Express=='TRUE'" src="images/icons/Exp-deal-tag.png" class="exp-deal-tag-image" />
                         </div>
+
+
+
                         <!--<div class="deal-tag">
-                            <img src="images/icons/deal-tag.png" class="deal-tag-image"/>
-                            <img src="images/icons/Exp-deal-tag.png" class="exp-deal-tag-image"/>
-                        </div> -->
-                    </div>
+                    <img src="images/icons/deal-tag.png" class="deal-tag-image"/>
+                    <img src="images/icons/Exp-deal-tag.png" class="exp-deal-tag-image"/>
+                </div> -->
+                    </span>
                     <div class="tailor-deal-action">
                         <span class="call"><a href="tel:{{Tailor.TailorPhone}}"><img alt="{{Tailor.TailorPhone}}" src="images/icons/call.png" /></a></span>
                         <span class="wishlist"><a ng-click="AddtoWishList('{{Tailor.GUID}}','{{globals.currentUser.guid}}','{{Tailor.TailorName}}','{{Tailor.TailorAddress}}','{{Tailor.AverageRating}}','{{Tailor.TailorImage}}')"><img src="images/icons/wishlist.png" /></a></span>
@@ -45,7 +68,8 @@
                 </div>
 
             </div>
-            <div ng-if="Tailors.length==0" class="text-center">
+
+            <div ng-if="TrendTailors.length==0" class="text-center">
                 No Record Found
             </div>
         </div>
