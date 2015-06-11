@@ -131,7 +131,7 @@ angular.module('App.directives').directive('appVersion', ['version', function (v
     return {
         require: 'ngModel',
         link: function (scope, element, attrs, modelCtrl) {
-            debugger;
+            
             modelCtrl.$parsers.push(function (inputValue) {
                 if (inputValue === undefined) return '';
                 var isUsphone = phoneRegx.test(inputValue),
@@ -166,11 +166,11 @@ angular.module('App.directives').directive('appVersion', ['version', function (v
 				isSmall = +/[a-z]+/.test(inputValue),
 				isSpecial = +/[!@#$%&\/=\?_\.,:;\-]+/.test(inputValue);
                 if (isNumeric + isCapitals + isSmall + isSpecial < minSuccess || inputValue.length < validLength) {
-                    modelCtrl.$setValidity('password', false);
+                    modelCtrl.$setValidity('Txt_NewPassword', false);
                     return undefined;
                 }
                 else {
-                    modelCtrl.$setValidity('password', true);
+                    modelCtrl.$setValidity('Txt_NewPassword', true);
                     return inputValue;
                 }
                 return inputValue;

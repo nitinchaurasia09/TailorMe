@@ -29,7 +29,7 @@
             }, 5000);
         }
         function validateToken(token) {
-            debugger;
+            
             $.ajax(
         {
             url: VALIDURL + token,
@@ -57,7 +57,7 @@
         //credits: http://www.netlobo.com/url_query_string_javascript.html
 
         function gup(url, name) {
-            debugger;
+            
             namename = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
             var regexS = "[\\#&]" + name + "=([^&#]*)";
             var regex = new RegExp(regexS);
@@ -68,7 +68,7 @@
                 return results[1];
         }
         function startLogoutPolling() {
-            debugger;
+            
             $('#loginText').show();
             $('#logoutText').hide();
             loggedIn = false;

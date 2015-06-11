@@ -69,7 +69,7 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', '$http', 'webapi', '$rootSco
             }
         }
         /* for (var i = 0; i <= $rootScope.Tailors.length; i++) {
-             debugger;
+             
             // alert(i + ',' + current.$index);
              if (i != current.$index) {
                  $("div[id*=lstTail]").removeClass('position-left');
@@ -265,7 +265,7 @@ appCtrl.controller('footer-ctrl', ['$scope', 'webapi', '$rootScope', '$location'
                 });
             });
         }
-        debugger;
+        
         if ($rootScope.latitude != null && $rootScope.latitude != undefined) {
             webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
                 $rootScope.Tailors = data;
@@ -349,7 +349,7 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
     });
 
     $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
-        debugger;
+        
         if (checkAuthenticated.IsAuthenticated() == false) {
             $location.path("/login");
             return false;

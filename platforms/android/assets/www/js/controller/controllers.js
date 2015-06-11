@@ -13,9 +13,7 @@ appCtrl.controller('main-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'Aut
         $rootScope.showLogin = true;
         AuthenticationService.ClearCredentials();
     }
-    $scope.SetNewCreds = function (_id, _name, _email, _accountType) {
-        alert('in SetNewCreds');
-
+    $scope.SetNewCreds = function (_id, _name, _email, _accountType) { 
         AuthenticationService.SetCredentials(_id, _name, _email, _accountType);
         if ($rootScope.previousRoute == undefined) {
             $location.path('/');
@@ -31,7 +29,6 @@ appCtrl.controller('main-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'Aut
         return false;
     }
     $rootScope.ShowBackButton = true;
-    //alert($location.$$path.toString().indexOf("#/", 2));
     if ($location.$$path.toString().indexOf("/", 1) < 0) {
         $rootScope.ShowBackButton = false;
     }
@@ -63,7 +60,7 @@ appCtrl.controller('location-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 
         }
         $scope.Location = json;
     }).error(function (data) {
-        alert('GetLocations - ' + data);
+        toastr.success('GetLocations - ' + data);
     });
     /***************************************/
 }]);
@@ -75,21 +72,21 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', '$http', 'webapi', '$rootSco
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + $routeParams.tname + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data) {
-            alert('searchTailorbyName 2-' + data);
+            toastr.success('searchTailorbyName 2-' + data);
         });
     }
     else if ($routeParams.featId != null && $routeParams.featId != '' && $routeParams.featId != undefined) {
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=" + $routeParams.featId + "&Category=" + $routeParams.catId + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data) {
-            alert('searchTailorbyName 3-' + data);
+            toastr.success('searchTailorbyName 3-' + data);
         });
     }
     else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null) {
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data) {
-            alert('searchTailorbyName 4-' + data);
+            toastr.success('searchTailorbyName 4-' + data);
         });
     }
 
@@ -159,7 +156,7 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', '$http', 'webapi', '$rootSco
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data) {
-            alert('searchTailorbyName - ' + data);
+            toastr.success('searchTailorbyName - ' + data);
         });
     }
 
@@ -275,18 +272,16 @@ appCtrl.controller('footer-ctrl', ['$scope', 'webapi', '$rootScope', '$location'
                 });
             });
         }
-        debugger;
+        
         if ($rootScope.latitude != null && $rootScope.latitude != undefined) {
             webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
                 $rootScope.Tailors = data;
                 $location.path("/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude);
             }).error(function (data) {
-                //alert('Error while showing tailor listing -' + data);
                 toastr.error('Error while showing tailor listing -' + data);
             });
         }
         else {
-            //alert('Please enable location services on your mobile.');
             toastr.warning('Please enable location services on your mobile.');
         }
     }
@@ -308,7 +303,6 @@ appCtrl.controller('wishlist-ctrl', ['$scope', '$rootScope', 'webapi', '$routePa
         webapi.Call('GET', urlServerUtil.WishListUrl + '?UserId=' + $rootScope.globals.currentUser.guid, "{}").success(function (data, status, headers, config) {
             $rootScope.Wishlists = data;
         }).error(function (data) {
-            // alert('wishlist-ctrl -' + data);
             toastr.error('wishlist-ctrl -' + data);
         });
     } else {
@@ -320,7 +314,6 @@ appCtrl.controller('wishlist-ctrl', ['$scope', '$rootScope', 'webapi', '$routePa
 
     function getResult(tx, result) {
         if (result.rows.length < 1) {
-            // alert('No tailor added in your wishlist');
             toastr.warning('No tailor added in your wishlist');
         }
         else {
@@ -339,7 +332,7 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
     webapi.Call('GET', urlServerUtil.TailorDetailUrl + 'TailorId=' + $routeParams.tailorId + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
         $scope.TailorDetail = data;
     }).error(function (data) {
-        alert('Error while fetching tailor details -' + data);
+        toastr.success('Error while fetching tailor details -' + data);
     });
     webapi.Call('GET', urlServerUtil.TailorGalleryUrl + 'TailorId=' + $routeParams.tailorId, "{}").success(function (data, status, headers, config) {
         $rootScope.TailorGallery = data;
@@ -377,7 +370,7 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
 
         };
     }).error(function (data) {
-        alert('Error while fetching gallery details -' + data);
+        toastr.success('Error while fetching gallery details -' + data);
     });
     $scope.showModal = false;
     $scope.toggleModal = function () {
@@ -415,11 +408,11 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
     webapi.Call('GET', urlServerUtil.TailorDealsUrl + 'TailorId=' + $routeParams.tailorId, "{}").success(function (data, status, headers, config) {
         $scope.TailorDeals = data;
     }).error(function (data) {
-        alert('tailor-Detail-ctrl -' + data);
+        toastr.success('tailor-Detail-ctrl -' + data);
     });
 
     $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
-        debugger;
+        
         if (checkAuthenticated.IsAuthenticated() == false) {
             $location.path("/login");
             return false;
@@ -447,11 +440,10 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
         });
         webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
             if (data == true) {
-                // alert('Wish list saved');
                 toastr.success('Wish list saved');
             }
         }).error(function (data) {
-            alert('AddtoWishList -' + data);
+            toastr.success('AddtoWishList -' + data);
         });
     };
 
@@ -460,7 +452,7 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
         $scope.TailorDetail = data;
         CreateMap();
     }).error(function (data) {
-        alert('AddtoWishList 2-' + data);
+        toastr.success('AddtoWishList 2-' + data);
     });
 
 
@@ -601,7 +593,7 @@ appCtrl.controller('deal-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
     webapi.Call('GET', urlServerUtil.AllDealsUrl, "{}").success(function (data, status, headers, config) {
         $scope.AllDeals = data;
     }).error(function (data) {
-        alert('deal-ctrl -' + data);
+        toastr.success('deal-ctrl -' + data);
     });
 }]);
 
@@ -616,23 +608,24 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
     webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
         $scope.login = data;
     }).error(function (data) {
-        alert('change-password-ctrl -' + data);
+        toastr.success('change-password-ctrl -' + data);
     });
 
     $scope.updatePassword = function (user) {
 
         if ($scope.newpassword != $scope.repassword && $scope.newpassword != undefined) {
-            alert('New password does not match');
+            toastr.success('New password does not match');
             return false;
         }
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, Password: $scope.newpassword
         });
         if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {
-            webapi.Call('PUT', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
+            //http://localhost:58938/api/User
+            webapi.Call('POST', urlServerUtil.UserUrl + '?user=' + $rootScope.globals.currentUser.guid + '&password=' + $scope.newpassword, "{}").success(function (data, status, headers, config) {
                 toastr.success('Password updated successfully');
             }).error(function (data) {
-                alert('updatePassword -' + data);
+                toastr.success('updatePassword -' + data);
             });
         } else {
             toastr.warning('Old password does not match');
@@ -653,12 +646,13 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
     webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
         $scope.UserDetail = data[0];
     }).error(function (data) {
-        alert('user-detail-ctrl -' + data);
+        toastr.success('user-detail-ctrl -' + data);
     });
     $scope.editDetail = function (user) {
         var param = JSON.stringify({
-            GUID: $rootScope.globals.currentUser.guid, UserName: user.UserName, UserEmail: user.UserEmail, UserPhone: user.UserPhone, UserLocation: user.UserLocation, FirstName: user.FirstName, LastName: user.LastName
+            GUID: $rootScope.globals.currentUser.guid, UserName: user.UserName, UserEmail: user.UserEmail, UserPhone: user.UserPhone, UserLocation: user.UserLocation, FirstName: user.FirstName, LastName: user.LastName, UserImage: user.UserImage
         });
+        
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
             toastr.success('User Updated Successfully');
             webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
@@ -667,7 +661,7 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
                 $('#editDetailPage').hide();
             });
         }).error(function (data) {
-            alert('editDetail -' + data);
+            toastr.success('editDetail -' + data);
         });
     };
 
@@ -705,7 +699,7 @@ appCtrl.controller('login-ctrl',
                     $scope.error = data.message;
                 }
             }).error(function (data, status) {
-                alert('login -' + data + ' ' + status);
+                toastr.success('login -' + data + ' ' + status);
             });
             $scope.dataLoading = false;
         };
@@ -729,9 +723,9 @@ appCtrl.controller('review-ctrl',
                 Comment: review.comment, ReviewTitle: review.title, Rating: review.quality
             });
             webapi.Call('POST', urlServerUtil.ReviewUrl, param).success(function (data, status, headers, config) {
-                alert(data);
+                toastr.success(data);
             }).error(function (data) {
-                alert('writeReview -' + data);
+                toastr.success('writeReview -' + data);
             });
         };
     }]);
@@ -745,7 +739,7 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
             toastr.success('User Added Successfully');
         }).error(function (data) {
-            alert('addDetail -' + data);
+            toastr.success('addDetail -' + data);
         });
     };
 }]);
@@ -755,7 +749,7 @@ appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '3', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
     }).error(function (data) {
-        alert('help-ctrl - ' + data);
+        toastr.success('help-ctrl - ' + data);
     });
 }]);
 
@@ -764,7 +758,7 @@ appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '2', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
     }).error(function (data) {
-        alert('about-ctrl - ' + data);
+        toastr.success('about-ctrl - ' + data);
     });
 }]);
 
@@ -772,7 +766,7 @@ appCtrl.controller('trend-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '$r
     webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.latitude + "&trend=1", "{}").success(function (data, status, headers, config) {
         $rootScope.TrendTailors = data;
     }).error(function (data) {
-        alert('TrendData 3-' + data);
+        toastr.success('TrendData 3-' + data);
     });
 
     $('.navbar-absolute-bottom').show();
@@ -842,7 +836,7 @@ appCtrl.controller('trend-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '$r
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.TrendTailors = data;
         }).error(function (data) {
-            alert('searchTailorbyName - ' + data);
+            toastr.success('searchTailorbyName - ' + data);
         });
     }
 
