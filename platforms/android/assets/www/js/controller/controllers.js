@@ -628,15 +628,13 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, Password: $scope.newpassword
         });
-        if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {// && $scope.login[0].Password == $scope.oldpassword) {
+        if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {
             webapi.Call('PUT', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
-                //alert('Password updated successfully');
                 toastr.success('Password updated successfully');
             }).error(function (data) {
                 alert('updatePassword -' + data);
             });
         } else {
-            // alert('Old password does not match');
             toastr.warning('Old password does not match');
         }
     };

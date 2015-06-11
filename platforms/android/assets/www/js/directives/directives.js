@@ -1,6 +1,9 @@
 'use strict';
 /* Directives */
 angular.module('App.directives', []);
+/*Directive created for Phone only*/
+var phoneRegx = /(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$/;
+var phoneTenDigitRegx = /^[0-9]{1,10}$/;
 
 angular.module('App.directives').directive('appVersion', ['version', function (version) {
     return function (scope, elm, attrs) {
@@ -117,12 +120,65 @@ angular.module('App.directives').directive('appVersion', ['version', function (v
     return function (scope, iElement, iAttrs) {
         iElement.autocomplete({
             source: scope[iAttrs.uiItems],
-            select: function () {                
+            select: function () {
                 $timeout(function () {
                     iElement.trigger('input');
                 }, 0);
             }
         });
     };
+}).directive('phoneOnly', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, modelCtrl) {
+            debugger;
+            modelCtrl.$parsers.push(function (inputValue) {
+                if (inputValue === undefined) return '';
+                var isUsphone = phoneRegx.test(inputValue),
+				isphoneTenNumber = phoneTenDigitRegx.test(inputValue);
+                if (inputValue.length == 10 && isphoneTenNumber === true) {
+                    modelCtrl.$setValidity('txtPhone', true);
+                    return inputValue;
+                }
+                else if (inputValue.length == 12 && isUsphone === true) {
+                    modelCtrl.$setValidity('txtPhone', true);
+                    return inputValue;
+                }
+                else {
+                    modelCtrl.$setValidity('txtPhone', false);
+                    return undefined;
+                }
+                return inputValue;
+            });
+        }
+    };
+}).directive('passwordOnly', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, modelCtrl) {
+            modelCtrl.$parsers.push(function (inputValue) {
+                if (inputValue === undefined) return '';
+
+                var validLength = 6,
+				minSuccess = 3,
+				isNumeric = +/\d+/.test(inputValue),
+				isCapitals = +/[A-Z]+/.test(inputValue),
+				isSmall = +/[a-z]+/.test(inputValue),
+				isSpecial = +/[!@#$%&\/=\?_\.,:;\-]+/.test(inputValue);
+                if (isNumeric + isCapitals + isSmall + isSpecial < minSuccess || inputValue.length < validLength) {
+                    modelCtrl.$setValidity('password', false);
+                    return undefined;
+                }
+                else {
+                    modelCtrl.$setValidity('password', true);
+                    return inputValue;
+                }
+                return inputValue;
+            });
+        }
+    };
 });
-;
+
+
+
+
