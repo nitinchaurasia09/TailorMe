@@ -660,7 +660,7 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
             return false;
         }
         var param = JSON.stringify({
-            GUID: $rootScope.globals.currentUser.guid, Password: $scope.newpassword
+            GUID: $rootScope.globals.currentUser.guid, UserName: user.name, UserEmail: user.email, UserPhone: user.phone, UserLocation: user.address, FirstName: user.fname, LastName: user.lname, Password: user.Password, UserImage: user.UserImage == undefined ? urlServerUtil.blankImage : user.UserImage
         });
         if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {// && $scope.login[0].Password == $scope.oldpassword) {
             webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
