@@ -48,7 +48,7 @@
                     <fieldset>
                         <div class=" has-success has-feedback">
                             <label>UserName</label>
-                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="UserDetail.UserName" placeholder="Name" required maxlength="30">
+                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="UserDetail.UserName" placeholder="Username is required" required maxlength="30">
                             <span style="color:red" ng-show="form.txtName.$dirty && form.txtName.$invalid">
                                 <span ng-show="form.txtName.$error.required">Username is required.</span>
                             </span>
@@ -56,7 +56,7 @@
 
                         <div class=" has-success has-feedback">
                             <label>First Name</label>
-                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="UserDetail.FirstName" placeholder="First Name" required maxlength="40" />
+                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="UserDetail.FirstName" placeholder="First name is required" required maxlength="40" />
                             <span style="color:red" ng-show="form.txtFName.$dirty && form.txtFName.$invalid">
                                 <span ng-show="form.txtFName.$error.required">First name is required.</span>
                             </span>
@@ -64,7 +64,7 @@
 
                         <div class=" has-success has-feedback">
                             <label>Last Name</label>
-                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="UserDetail.LastName" placeholder="Last Name" required maxlength="40" />
+                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="UserDetail.LastName" placeholder="Last Name is required" required maxlength="40" />
                             <span style="color:red" ng-show="form.txtlName.$dirty && form.txtlName.$invalid">
                                 <span ng-show="form.txtlName.$error.required">Last name is required.</span>
                             </span>
@@ -76,7 +76,7 @@
                             <input id="txtEmail" name="txtEmail" type="email"
                                    class="form-control"
                                    data-ng-model="UserDetail.UserEmail"
-                                   placeholder="Email" required>
+                                   placeholder="Email is required" required>
                             <span style="color:red" ng-show="form.txtEmail.$dirty && form.txtEmail.$invalid || form.txtEmail.$error.required">
                                 Invalid email.
                             </span>
@@ -84,7 +84,7 @@
 
                         <div class="">
                             <label>Phone</label>
-                            <input id="txtPhone" name="txtPhone" class="form-control" type="tel" placeholder="Phone" ng-model="UserDetail.UserPhone" required phone-only />
+                            <input id="txtPhone" name="txtPhone" class="form-control" type="tel" placeholder="Phone is required" ng-model="UserDetail.UserPhone" required phone-only />
                             <span style="color:red" ng-show="form.txtPhone.$dirty && form.txtPhone.$invalid">
                                 <span ng-show="form.txtPhone.$error.required || form.txtPhone.$error.txtPhone">Invalid phone.</span>
                             </span>
@@ -95,7 +95,7 @@
                             <input id="txtAddress" name="txtAddress" type="text"
                                    class="form-control"
                                    data-ng-model="UserDetail.UserLocation"
-                                   placeholder="Address" multiple required>
+                                   placeholder="Address is required" multiple required>
                             <span style="color:red" ng-show="form.txtAddress.$dirty && form.txtAddress.$invalid">
                                 <span ng-show="form.txtAddress.$error.required">Address is required.</span>
                             </span>

@@ -4,56 +4,73 @@
             <div class="mydetail-form">
                 <form name="form" role="form">
                     <fieldset>
-                        <div class="form-group has-success has-feedback">
+                        <div class=" has-success has-feedback">
                             <label>User Name</label>
-                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="user.name" placeholder="Name" />
+                            <input type="text" id="txtName" name="txtName" class="form-control" ng-model="user.name" placeholder="UserName is required" required />
+                            <span style="color: red" ng-show="form.txtName.$dirty && form.txtName.$invalid">
+                                <span ng-show="form.txtName.$error.required">Username is required.</span>
+                            </span>
                         </div>
 
-                        <div class="form-group has-success has-feedback">
+                        <div class=" has-success has-feedback">
                             <label>First Name</label>
-                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="user.fname" placeholder="First Name" />
+                            <input type="text" id="txtFName" name="txtFName" class="form-control" ng-model="user.fname" placeholder="First Name is required" required />
+                            <span style="color: red" ng-show="form.txtFName.$dirty && form.txtFName.$invalid">
+                                <span ng-show="form.txtFName.$error.required">First name is required.</span>
+                            </span>
                         </div>
 
-                        <div class="form-group has-success has-feedback">
+                        <div class=" has-success has-feedback">
                             <label>Last Name</label>
-                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="user.lname" placeholder="Last Name" />
+                            <input type="text" id="txtlName" name="txtlName" class="form-control" ng-model="user.lname" placeholder="Last Name is required" required />
+                            <span style="color: red" ng-show="form.txtlName.$dirty && form.txtlName.$invalid">
+                                <span ng-show="form.txtlName.$error.required">Last name is required.</span>
+                            </span>
                         </div>
 
-                        <div class="form-group has-success has-feedback">
+                        <div class=" has-success has-feedback">
                             <label>Password</label>
-                            <input type="password" id="txtPass" name="txtPass" class="form-control" ng-model="user.pass" placeholder="Password" />
+                            <input type="password" id="txtPass" name="txtPass" class="form-control" ng-model="user.pass" placeholder="Password is required" password-only />
+                            <span style="color: red" ng-show="form.txtPass.$dirty && form.txtPass.$invalid">
+                                <span ng-show="form.txtPass.$error.required || form.txtPass.$error.Txt_NewPassword">Password should be atlease one Caplital, special and numeric.</span>
+                            </span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="">
                             <label>Email</label>
                             <input id="txtEmail" name="txtEmail" type="email"
                                    class="form-control"
                                    data-ng-model="user.email"
-                                   placeholder="Email">
+                                   placeholder="Email is required" required>
+                            <span style="color: red" ng-show="form.txtEmail.$dirty && form.txtEmail.$invalid || form.txtEmail.$error.required">Invalid email.
+                            </span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="">
                             <label>Phone</label>
-                            <input id="txtPhone" name="txtPhone" type="text"
-                                   class="form-control"
-                                   data-ng-model="user.phone"
-                                   placeholder="Phone">
+                            <input id="txtPhone" name="txtPhone" class="form-control" type="tel" placeholder="Phone is required" ng-model="user.phone" required phone-only />
+                            <span style="color: red" ng-show="form.txtPhone.$dirty && form.txtPhone.$invalid">
+                                <span ng-show="form.txtPhone.$error.required || form.txtPhone.$error.txtPhone">Invalid phone.</span>
+                            </span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="">
                             <label>Address</label>
                             <input id="txtAddress" name="txtAddress" type="text"
                                    class="form-control"
                                    data-ng-model="user.address"
-                                   placeholder="Address" multiple>
+                                   placeholder="Address is required" multiple required>
+                            <span style="color: red" ng-show="form.txtAddress.$dirty && form.txtAddress.$invalid">
+                                <span ng-show="form.txtAddress.$error.required">Address is required.</span>
+                            </span>
                         </div>
-
-                        <div class="form-group">
-                            <button type="submit" data-ng-click="addDetail(user)" class="btn btn-primary btn-lg btn-block">Add</button>
+                        <br />
+                        <div class="">
+                            <button type="submit" data-ng-click="addDetail(user)" class="btn btn-primary btn-lg btn-block" ng-disabled="form.$invalid">Add</button>
                         </div>
                     </fieldset>
                 </form>
             </div>
         </div>
     </div>
-</div>  
+</div>
