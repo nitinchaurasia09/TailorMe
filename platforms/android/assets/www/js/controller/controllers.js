@@ -729,6 +729,8 @@ appCtrl.controller('login-ctrl',
             webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
                 if (data != null && data != undefined && data != "null") {
                     toastr.success('Login Successfully');
+                    debugger;
+                    $rootScope.UserInfo = data;
                     $rootScope.showLogin = false;
                     AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
                     if ($rootScope.previousRoute == undefined) {

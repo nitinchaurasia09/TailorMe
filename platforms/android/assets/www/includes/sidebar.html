@@ -18,7 +18,7 @@
 				
         <div class="scrollable-content">
             <div class="search-list-group" ng-repeat="feature in FeaturesAndCategory">
-                <a id="{{ 'aFeature-' + $index }}" href="javascript:;" class="search-list-group-item" ng-click="expand('aFeature-'+$index, 'divFeature-' + $index,'iFeature-' + $index )">
+                <a id="{{ 'aFeature-' + $index }}" href="{{feature.FeatureUrl}}" class="search-list-group-item" ng-click="expand('aFeature-'+$index, 'divFeature-' + $index,'iFeature-' + $index )">
                     <span class="tailor-icon {{feature.FontName}}"></span>
                     {{feature.FeatureName}}<i id="{{ 'iFeature-' + $index }}" class="fa-fw fa fa-plus"></i>
                 </a>

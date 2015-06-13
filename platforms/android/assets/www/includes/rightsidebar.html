@@ -1,4 +1,7 @@
 ﻿ <!-- Sidebar right -->
+
+
+
 <div class="scrollable" ng-hide="showLogin">
 
     <div class="scrollable-content">
@@ -7,9 +10,9 @@
 
             <div class="vertical-center">
                 <div class="profile-image">
-                    <img src="images/list-picture.jpg" class="" />
+                    <img src="{{UserInfo.UserImage }}" class="" />
                 </div>
-                <p class="name">Nicole Miller Factory</p>
+                <p class="name">{{UserInfo.FirstName }} {{UserInfo.LastName }}</p>
             </div>
 
         </div>
