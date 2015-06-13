@@ -659,8 +659,9 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
             toastr.success('New password does not match');
             return false;
         }
+        debugger;
         var param = JSON.stringify({
-            GUID: $rootScope.globals.currentUser.guid, UserName: user.name, UserEmail: user.email, UserPhone: user.phone, UserLocation: user.address, FirstName: user.fname, LastName: user.lname, Password: user.Password, UserImage: user.UserImage == undefined ? urlServerUtil.blankImage : user.UserImage
+            GUID: $rootScope.globals.currentUser.guid, UserName: user[0].UserName, UserEmail: user[0].UserEmail, UserPhone: user[0].UserPhone, UserLocation: user[0].UserLocation, FirstName: user[0].FirstName, LastName: user[0].LastName, Password: $scope.newpassword, UserImage: user[0].UserImage == undefined ? urlServerUtil.blankImage : user[0].UserImage
         });
         if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {// && $scope.login[0].Password == $scope.oldpassword) {
             webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
@@ -696,6 +697,7 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
             toastr.success('User Updated Successfully');
+            $scope.user = null;
             webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
                 $scope.UserDetail = data[0];
                 $('#myDetailPage').show();
@@ -750,20 +752,27 @@ appCtrl.controller('login-ctrl',
 appCtrl.controller('review-ctrl',
     ['$rootScope', 'checkAuthenticated', '$location', '$scope', '$routeParams', 'webapi',
     function ($rootScope, checkAuthenticated, $location, $scope, $routeParams, webapi) {
-        //Mendatory code for authentication
+        //Mendatory code for authentication        
         $('.navbar-absolute-bottom').show();
         if (checkAuthenticated.IsAuthenticated() == false) {
             $location.path("/login");
             return false;
         }
 
+
+
+
+
+
+
+
         $scope.writeReview = function (review) {
-            $scope.review = { tailorID: "", userID: "", title: "", comment: "", quality: "" };
             var param = JSON.stringify({
-                UserId: $rootScope.globals.currentUser.guid, TailorId: $routeParams.tailorId,
-                Comment: review.comment, ReviewTitle: review.title, Rating: review.quality
+                UserId: $rootScope.globals.currentUser.guid, UserName: review.name, TailorId: $routeParams.tailorId, Comment: review.comment, ReviewTitle: review.email, Rating: review.quality
             });
+
             webapi.Call('POST', urlServerUtil.ReviewUrl, param).success(function (data, status, headers, config) {
+                $scope.review = null;
                 toastr.success('Review added successfully.');
             }).error(function (data) {
                 toastr.success('writeReview -' + data);
@@ -778,6 +787,7 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
             GUID: '', UserName: user.name, UserEmail: user.email, UserPhone: user.phone, UserLocation: user.address, FirstName: user.fname, LastName: user.lname, Password: user.pass, UserImage: urlServerUtil.blankImage
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
+            $scope.user = null;
             if (data == true)
                 toastr.success('User Added Successfully');
             else
