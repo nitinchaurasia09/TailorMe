@@ -2,364 +2,7 @@
 /* Controllers */
 var appCtrl = angular.module('App.controllers', ['ui.bootstrap', 'ngAnimate', 'ngTouch', 'angucomplete-alt']);
 
-appCtrl.controller('main-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'AuthenticationService', '$location', function ($scope, $http, webapi, $rootScope, AuthenticationService, $location) {
-    $('.navbar-absolute-bottom').show();
-    $scope.setDb = function (dbObj) {
-
-        $rootScope.myDB = dbObj;
-    }
-
-    $scope.logout = function () {
-        $rootScope.showLogin = true;
-        AuthenticationService.ClearCredentials();
-    }
-    $scope.SetNewCreds = function (_id, _name, _email, _accountType) {
-        toastr.success('in SetNewCreds');
-
-        AuthenticationService.SetCredentials(_id, _name, _email, _accountType);
-        if ($rootScope.previousRoute == undefined) {
-            $location.path('/');
-        }
-        else {
-            window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
-        }
-    }
-    $rootScope.longitude = '';
-    $rootScope.latitude = '';
-    $scope.GoBack = function () {
-        window.history.back();
-        return false;
-    }
-    $rootScope.ShowBackButton = true;
-    //toastr.success($location.$$path.toString().indexOf("#/", 2));
-    if ($location.$$path.toString().indexOf("/", 1) < 0) {
-        $rootScope.ShowBackButton = false;
-    }
-}]);
-
-appCtrl.controller('location-ctrl', ['$scope', '$http', 'webapi', '$rootScope', 'AuthenticationService', '$location', function ($scope, $http, webapi, $rootScope, AuthenticationService, $location) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            $scope.$apply(function () {
-                $rootScope.latitude = position.coords.latitude;
-                $rootScope.longitude = position.coords.longitude;
-            });
-        });
-    }
-    $scope.redirectToTailorListing = function () {
-        if (!navigator.onLine || ($rootScope.latitude == '')) {
-            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude;
-        }
-        else {
-            toastr.success('Location Service is not enable in your mobile.');
-        }
-    }
-
-    ///*******For autocomplete****************/
-    webapi.Call('GET', urlServerUtil.GetLocationsUrl, "{}").success(function (data, status, headers, config) {
-        var json = []
-        for (var i = 0; i < data.length; i++) {
-            json.push({ "TailorAddress": data[i].TailorAddress, "Latitude": data[i].Latitude, "Longitude": data[i].Longitude })
-        }
-        $scope.Location = json;
-    }).error(function (data) {
-        toastr.success('GetLocations - ' + data);
-    });
-    /***************************************/
-}]);
-
-appCtrl.controller('tailorListing-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '$routeParams', 'checkAuthenticated', '$location', function ($scope, $http, webapi, $rootScope, $routeParams, checkAuthenticated, $location) {
-    $('.navbar-absolute-bottom').show();
-    //$scope.showcss = 'position-center'; 
-    $scope.showActions = 0;
-    $scope.showcss = [];
-    $scope.getSwipe = function (ctrl, pos, current) {
-
-        if ($scope.showcss.length == 0) {
-
-            for (var i = 0; i < $rootScope.Tailors.length; i++) {
-                if (i != current.$index)
-                    $scope.showcss.push('position-center');
-
-            }
-        }
-        /* for (var i = 0; i <= $rootScope.Tailors.length; i++) {
-             debugger;
-            // toastr.success(i + ',' + current.$index);
-             if (i != current.$index) {
-                 $("div[id*=lstTail]").removeClass('position-left');
-                 $("div[id*=lstTail]").removeClass('position-right');
-                 $("div[id*=lstTail]").addClass('position-center');
-             }
-         }*/
-        //if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-center') {
-        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-center')) {
-            for (var i = 0; i < $rootScope.Tailors.length; i++) {
-                $scope.showcss.push('position-center');
-                $("div[id*=lstTail]").removeClass('position-left');
-                $("div[id*=lstTail]").removeClass('position-right');
-                $("div[id*=lstTail]").addClass('position-center');
-            }
-            $scope.showcss[current.$index] = 'position-left';
-            $("#" + ctrl).removeClass('position-center');
-            $("#" + ctrl).addClass('position-left');
-        }
-        // if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-right') {
-        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-right')) {
-            for (var i = 0; i < $rootScope.Tailors.length; i++) {
-                $scope.showcss.push('position-center');
-                $("div[id*=lstTail]").removeClass('position-left');
-                $("div[id*=lstTail]").removeClass('position-right');
-                $("div[id*=lstTail]").addClass('position-center');
-            }
-            $("#" + ctrl).removeClass('position-right');
-            $("#" + ctrl).addClass('position-center');
-            $scope.showcss[current.$index] = 'position-center';
-        }
-
-        // if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-center') {
-        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-center')) {
-            for (var i = 0; i < $rootScope.Tailors.length; i++) {
-                $scope.showcss.push('position-center');
-                $("div[id*=lstTail]").removeClass('position-left');
-                $("div[id*=lstTail]").removeClass('position-right');
-                $("div[id*=lstTail]").addClass('position-center');
-            }
-            $("#" + ctrl).removeClass('position-center');
-            $("#" + ctrl).addClass('position-right');
-            $scope.showcss[current.$index] = 'position-right';
-        }
-
-        //if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-left') {
-        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-left')) {
-            for (var i = 0; i < $rootScope.Tailors.length; i++) {
-                $scope.showcss.push('position-center');
-                $("div[id*=lstTail]").removeClass('position-left');
-                $("div[id*=lstTail]").removeClass('position-right');
-                $("div[id*=lstTail]").addClass('position-center');
-            }
-            $("#" + ctrl).removeClass('position-left');
-            $("#" + ctrl).addClass('position-center');
-            $scope.showcss[current.$index] = 'position-center';
-        }
-        $scope.showcss.length = 0;
-    }
-
-    $rootScope.longitude = $routeParams.long;
-    $rootScope.latitude = $routeParams.lat;
-    $scope.searchTailorbyName = function (tname) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
-            $rootScope.Tailors = data;
-        }).error(function (data) {
-            toastr.success('searchTailorbyName - ' + data);
-        });
-    }
-
-    if ($routeParams.tname != null && $routeParams.tname != '' && $routeParams.tname != undefined) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + $routeParams.tname + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
-            $rootScope.Tailors = data;
-        }).error(function (data) {
-            toastr.success('searchTailorbyName 2-' + data);
-        });
-    }
-    else if ($routeParams.featId != null && $routeParams.featId != '' && $routeParams.featId != undefined) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=" + $routeParams.featId + "&Category=" + $routeParams.catId + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
-            $rootScope.Tailors = data;
-        }).error(function (data) {
-            toastr.success('searchTailorbyName 3-' + data);
-        });
-    }
-    else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
-            $rootScope.Tailors = data;
-        }).error(function (data) {
-            toastr.success('searchTailorbyName 4-' + data);
-        });
-    }
-
-    $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
-        if (checkAuthenticated.IsAuthenticated() == false) {
-            $location.path("/login");
-            return false;
-        }
-        // $rootScope.myDB.transaction(processQuery);
-        $scope.tailId = tId;
-        $scope.usId = $rootScope.globals.currentUser.guid;
-        $scope.tName = tName;
-        $scope.address = addres;
-        $scope.rating = rating;
-        $scope.image = image;
-
-        //Sumit's code
-        $rootScope.myDB.transaction(function (tx) {
-            tx.executeSql('Create table if not exists wishlist (userid ,tailorId ,tailorName,address,rating,image)');
-            var query = 'select * from wishlist where userid="' + uId + '" and tailorId="' + tId + '"';
-            tx.executeSql(query, [], getResult);
-            //tx.executeSql('Delete from wishlist');
-            // tx.executeSql('Insert into wishlist values("' + uId + '","' + tId + '","' + tName + '","' + addres + '","' + rating + '","'+image+'")');
-        });
-        function getResult(tx, result) {
-            var i;
-            if (result.rows.length > 0) {
-                //toastr.success('Tailor already added to wishlist');
-                toastr.warning('Tailor already added to wishlist');
-            }
-            else {
-                tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
-                //toastr.success('Tailor added to your wishlist');
-                toastr.success('Tailor added to your wishlist');
-            }
-        }
-        $scope.wishList = { TailorID: "", UserID: "" };
-        var param = JSON.stringify({
-            UserID: $scope.usId, TailorId: $scope.tailId
-        });
-        webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
-            if (data == true) {
-                //toastr.success('Wish list saved');
-                toastr.success('Wish list saved');
-            }
-        }).error(function (data) {
-            // toastr.success('AddtoWishList error-' + data);
-            toastr.error('AddtoWishList error-' + data);
-        });
-    };
-
-
-}]);
-
-appCtrl.controller('sidebar-ctrl', ['$scope', '$http', 'webapi', '$rootScope', '$location', function ($scope, $http, webapi, $rootScope, $location) {
-    $scope.expand = function (anc, dv, ife) {
-        if ($('#' + anc).hasClass('active')) {
-            $('#' + anc).removeClass("active");
-            $('#' + ife).addClass("fa-plus");
-            $('#' + ife).removeClass("fa-minus");
-            $('#' + dv).removeClass("show");
-            $('#' + dv).addClass("hide");
-        } else {
-            $('#' + anc).addClass("active");
-            $('#' + ife).removeClass("fa-plus");
-            $('#' + ife).addClass("fa-minus");
-            $('#' + dv).removeClass("hide");
-            $('#' + dv).addClass("show");
-        }
-    }
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            $scope.$apply(function () {
-                $rootScope.latitude = position.coords.latitude;
-                $rootScope.longitude = position.coords.longitude;
-            });
-        });
-    }
-
-    $scope.GetFeatures = function () {
-        webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
-            $rootScope.FeaturesAndCategory = data;
-        }).error(function (data) {
-            toastr.error('Error while retrieving categories -' + data);
-        });
-    }
-
-    $scope.submitsearchform = function (url) {
-        $location.path(url);
-    }
-
-    if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
-        $scope.GetFeatures();
-
-        setInterval(function () {
-            if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
-                $scope.GetFeatures();
-            }
-        }, 10000);
-    }
-}]);
-
-
-appCtrl.controller('footer-ctrl', ['$scope', 'webapi', '$rootScope', '$location', function ($scope, webapi, $rootScope, $location) {
-    $rootScope.showLogin = true;
-    if ($rootScope.globals != "") {
-        if ($rootScope.globals.currentUser.guid != null && $rootScope.globals.currentUser.guid != undefined) {
-            $rootScope.showLogin = false;
-        }
-    }
-    $scope.logout = function () {
-        $rootScope.showLogin = true;
-        AuthenticationService.ClearCredentials();
-    }
-    $scope.redirectToTailorListing = function () {
-        if (navigator.geolocation) {
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                $scope.$apply(function () {
-                    $rootScope.latitude = position.coords.latitude;
-                    $rootScope.longitude = position.coords.longitude;
-                });
-            });
-        }
-        debugger;
-        if ($rootScope.latitude != null && $rootScope.latitude != undefined) {
-            webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
-                $rootScope.Tailors = data;
-                $location.path("/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude);
-            }).error(function (data) {
-                //toastr.success('Error while showing tailor listing -' + data);
-                toastr.error('Error while showing tailor listing -' + data);
-            });
-        }
-        else {
-            //toastr.success('Please enable location services on your mobile.');
-            toastr.warning('Please enable location services on your mobile.');
-        }
-    }
-}]);
-
-appCtrl.controller('wishlist-ctrl', ['$scope', '$rootScope', 'webapi', '$routeParams', 'checkAuthenticated', function ($scope, $rootScope, webapi, $routeParams, checkAuthenticated) {
-    $('.navbar-absolute-bottom').show();
-    //$scope.try = "Wishlist";
-    if (checkAuthenticated.IsAuthenticated() == false) {
-        $location.path("/login");
-        return false;
-    }
-    $rootScope.longitude = $routeParams.long;
-    $rootScope.latitude = $routeParams.lat;
-
-    if (!navigator.onLine) {
-
-        // $rootScope.myDB.transaction(processQuery);
-        webapi.Call('GET', urlServerUtil.WishListUrl + '?UserId=' + $rootScope.globals.currentUser.guid, "{}").success(function (data, status, headers, config) {
-            $rootScope.Wishlists = data;
-        }).error(function (data) {
-            // toastr.success('wishlist-ctrl -' + data);
-            toastr.error('wishlist-ctrl -' + data);
-        });
-    } else {
-        $rootScope.myDB.transaction(function (tx) {
-            var query = 'select * from wishlist';
-            tx.executeSql(query, [], getResult);
-        });
-    }
-
-    function getResult(tx, result) {
-        if (result.rows.length < 1) {
-            // toastr.success('No tailor added in your wishlist');
-            toastr.warning('No tailor added in your wishlist');
-        }
-        else {
-            var arWishlist = new Array();
-            var i;
-            for (i = 0; i < result.rows.length; i++) {
-                arWishlist.push(result.rows.item(i));
-            }
-            $rootScope.Wishlists = arWishlist;
-        }
-    }
-}]);
-
 appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$routeParams', function ($scope, $rootScope, webapi, $routeParams) {
-
     webapi.Call('GET', urlServerUtil.TailorDetailUrl + 'TailorId=' + $routeParams.tailorId + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
         $scope.TailorDetail = data;
     }).error(function (data) {
@@ -631,8 +274,385 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
 
 }]);
 
-appCtrl.controller('deal-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+appCtrl.controller('login-ctrl',
+    ['$scope', '$http', '$rootScope', '$location', 'AuthenticationService', 'webapi',
+    function ($scope, $http, $rootScope, $location, AuthenticationService, webapi) {
+        $('.navbar-absolute-bottom').show();
+        $scope.login = function () {
+            $scope.dataLoading = true;
+            webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
+                if (data != null && data != undefined && data != "null") {
+                    toastr.success('Login Successfully');
+                    $rootScope.UserInfo = data;
+                    $rootScope.showLogin = false;
+                    AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
+                    if ($rootScope.previousRoute == undefined) {
+                        $location.path('/');
+                    }
+                    else {
+                        window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
+                    }
+                } else {
+                    toastr.error('Invalid Credentials');
+                    $scope.error = data.message;
+                }
+            }).error(function (data, status) {
+                toastr.success('login -' + data + ' ' + status);
+            });
+            $scope.dataLoading = false;
+        };
 
+        $rootScope.UserInfo.$watch(
+                    function ($scope) {
+                        alert(1);
+                    },
+                    function (newValue) {
+                        alert('new value');
+                    }
+                );
+        
+        //Code after facebook and google sign in
+        //var param = JSON.stringify({
+        //    ID: '1', FirstName: 'N', LastName: 'M', Email: 'nm@g.com', AccType: 'FB'
+        //});
+        //webapi.Call('POST', urlServerUtil.ExternalUserUrl, param).success(function (data, status, headers, config) {
+        //    toastr.success('Login Successfully');
+        //    $rootScope.UserInfo = data;
+        //    $rootScope.showLogin = false;
+        //    AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
+        //    if ($rootScope.previousRoute == undefined) {
+        //        $location.path('/');
+        //    }
+        //    else {
+        //        window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
+        //    }
+        //}).error(function (data) {
+        //    alert('Error-' + data);
+        //});
+
+    }]);
+
+
+
+
+/*Prefect working and no changes required*/
+appCtrl.controller('main-ctrl', ['$scope', 'webapi', '$rootScope', 'AuthenticationService', '$location', function ($scope, webapi, $rootScope, AuthenticationService, $location) {
+    $rootScope.longitude = null;
+    $rootScope.latitude = null;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            $scope.$apply(function () {
+                $rootScope.latitude = position.coords.latitude;
+                $rootScope.longitude = position.coords.longitude;
+                alert($rootScope.latitude + ' ' + $rootScope.longitude);
+            });
+        });
+    }
+
+    $('.navbar-absolute-bottom').show();
+    $scope.setDb = function (dbObj) {
+        $rootScope.myDB = dbObj;
+    }
+
+    $scope.logout = function () {
+        $rootScope.showLogin = true;
+        AuthenticationService.ClearCredentials();
+    }
+
+    $scope.GoBack = function () {
+        window.history.back();
+        return false;
+    }
+
+    $rootScope.ShowBackButton = true;
+    if ($location.$$path.toString().indexOf("/", 1) < 0) {
+        $rootScope.ShowBackButton = false;
+    }
+}]);
+
+appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function ($scope, webapi, $rootScope) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            $scope.$apply(function () {
+                $rootScope.latitude = position.coords.latitude;
+                $rootScope.longitude = position.coords.longitude;
+            });
+        });
+    }
+    $scope.getNearByTailor = function () {
+        if ($rootScope.latitude != '' && $rootScope.latitude != undefined && $rootScope.latitude != null) {
+            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude;
+        }
+        else {
+            toastr.success('Location Service is not enable in your mobile.');
+        }
+    }
+
+    ///*******For autocomplete****************/
+    webapi.Call('GET', urlServerUtil.GetLocationsUrl, "{}").success(function (data, status, headers, config) {
+        var json = []
+        for (var i = 0; i < data.length; i++) {
+            json.push({ "TailorAddress": data[i].TailorAddress, "Latitude": data[i].Latitude, "Longitude": data[i].Longitude })
+        }
+        $scope.Location = json;
+    }).error(function (data) {
+        toastr.success('GetLocations - ' + data);
+    });
+    /***************************************/
+}]);
+
+appCtrl.controller('sidebar-ctrl', ['$scope', 'webapi', '$rootScope', '$location', function ($scope, webapi, $rootScope, $location) {
+    $scope.expand = function (anc, dv, ife) {
+        if ($('#' + anc).hasClass('active')) {
+            $('#' + anc).removeClass("active");
+            $('#' + ife).addClass("fa-plus");
+            $('#' + ife).removeClass("fa-minus");
+            $('#' + dv).removeClass("show");
+            $('#' + dv).addClass("hide");
+        } else {
+            $('#' + anc).addClass("active");
+            $('#' + ife).removeClass("fa-plus");
+            $('#' + ife).addClass("fa-minus");
+            $('#' + dv).removeClass("hide");
+            $('#' + dv).addClass("show");
+        }
+    }
+
+    $scope.GetFeatures = function () {
+        webapi.Call('GET', urlServerUtil.FeatureCategory, "{}").success(function (data, status, headers, config) {
+            $rootScope.FeaturesAndCategory = data;
+        }).error(function (data) {
+            toastr.error('Error while retrieving categories -' + data);
+        });
+    }
+
+    $scope.GetFeatures();
+    setInterval(function () {
+        if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
+            $scope.GetFeatures();
+        } else { return false; }
+    }, 10000);
+}]);
+
+appCtrl.controller('footer-ctrl', ['$scope', 'webapi', '$rootScope', '$location', 'checkAuthenticated', 'AuthenticationService', function ($scope, webapi, $rootScope, $location, checkAuthenticated, AuthenticationService) {
+
+    $rootScope.showLogin = true;
+    if (checkAuthenticated.IsAuthenticated() == true) {
+        $rootScope.showLogin = false;
+    }
+
+    $scope.logout = function () {
+        $rootScope.showLogin = true;
+        AuthenticationService.ClearCredentials();
+    }
+    $scope.redirectToTailorListing = function () {
+        if ($rootScope.latitude != null && $rootScope.latitude != undefined) {
+            webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
+                $rootScope.Tailors = data;
+                $location.path("/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude);
+            }).error(function (data) {
+                toastr.error('Error while showing tailor listing -' + data);
+            });
+        }
+        else {
+            toastr.warning('Please enable location services on your mobile.');
+        }
+    }
+}]);
+
+appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$routeParams', 'checkAuthenticated', '$location', function ($scope, webapi, $rootScope, $routeParams, checkAuthenticated, $location) {
+    $('.navbar-absolute-bottom').show();;
+    $scope.showActions = 0;
+    $scope.showcss = [];
+    $scope.getSwipe = function (ctrl, pos, current) {
+        if ($scope.showcss.length == 0) {
+            for (var i = 0; i < $rootScope.Tailors.length; i++) {
+                if (i != current.$index)
+                    $scope.showcss.push('position-center');
+            }
+        }
+        /* for (var i = 0; i <= $rootScope.Tailors.length; i++) {
+             debugger;
+            // toastr.success(i + ',' + current.$index);
+             if (i != current.$index) {
+                 $("div[id*=lstTail]").removeClass('position-left');
+                 $("div[id*=lstTail]").removeClass('position-right');
+                 $("div[id*=lstTail]").addClass('position-center');
+             }
+         }*/
+        //if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-center') {
+        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-center')) {
+            for (var i = 0; i < $rootScope.Tailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $scope.showcss[current.$index] = 'position-left';
+            $("#" + ctrl).removeClass('position-center');
+            $("#" + ctrl).addClass('position-left');
+        }
+        // if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-right') {
+        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-right')) {
+            for (var i = 0; i < $rootScope.Tailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-right');
+            $("#" + ctrl).addClass('position-center');
+            $scope.showcss[current.$index] = 'position-center';
+        }
+
+        // if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-center') {
+        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-center')) {
+            for (var i = 0; i < $rootScope.Tailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-center');
+            $("#" + ctrl).addClass('position-right');
+            $scope.showcss[current.$index] = 'position-right';
+        }
+
+        //if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-left') {
+        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-left')) {
+            for (var i = 0; i < $rootScope.Tailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-left');
+            $("#" + ctrl).addClass('position-center');
+            $scope.showcss[current.$index] = 'position-center';
+        }
+        $scope.showcss.length = 0;
+    }
+
+    if ($rootScope.longitude == undefined && $rootScope.longitude == null && $rootScope.longitude == '')
+        $rootScope.longitude = $routeParams.long;
+    if ($rootScope.latitude == undefined && $rootScope.latitude == null && $rootScope.latitude == '')
+        $rootScope.latitude = $routeParams.lat;
+
+    $scope.searchTailorbyName = function (tname) {
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
+            $rootScope.Tailors = data;
+        }).error(function (data) {
+            toastr.success('Error in TailorListing Tailor name search' + data);
+        });
+    }
+
+    if ($routeParams.tname != null) {
+        $scope.searchTailorbyName($routeParams.tname);
+    }
+    else if ($routeParams.featId != null && $routeParams.featId != '' && $routeParams.featId != undefined) {
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=" + $routeParams.featId + "&Category=" + $routeParams.catId + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
+            $rootScope.Tailors = data;
+        }).error(function (data) {
+            toastr.success('Feature/Category search-' + data);
+        });
+    }
+    else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null) {
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
+            $rootScope.Tailors = data;
+        }).error(function (data) {
+            toastr.success('Near by search' + data);
+        });
+    }
+
+
+    //Need correction in this.
+    $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
+        debugger;
+        if (checkAuthenticated.IsAuthenticated() == false) {
+            $location.path("/login");
+            return false;
+        }
+        // $rootScope.myDB.transaction(processQuery);
+        $scope.tailId = tId;
+        $scope.usId = $rootScope.globals.currentUser.guid;
+        $scope.tName = tName;
+        $scope.address = addres;
+        $scope.rating = rating;
+        $scope.image = image;
+
+        //Sumit's code
+        $rootScope.myDB.transaction(function (tx) {
+            tx.executeSql('Create table if not exists wishlist (userid ,tailorId ,tailorName,address,rating,image)');
+            var query = 'select * from wishlist where userid="' + uId + '" and tailorId="' + tId + '"';
+            tx.executeSql(query, [], getResult);
+            //tx.executeSql('Delete from wishlist');
+            // tx.executeSql('Insert into wishlist values("' + uId + '","' + tId + '","' + tName + '","' + addres + '","' + rating + '","'+image+'")');
+        });
+        function getResult(tx, result) {
+            var i;
+            if (result.rows.length > 0) {
+                //toastr.success('Tailor already added to wishlist');
+                toastr.warning('Tailor already added to wishlist');
+            }
+            else {
+                tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
+                //toastr.success('Tailor added to your wishlist');
+                toastr.success('Tailor added to your wishlist');
+            }
+        }
+        $scope.wishList = { TailorID: "", UserID: "" };
+        var param = JSON.stringify({
+            UserID: $scope.usId, TailorId: $scope.tailId
+        });
+        webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
+            if (data == true) {
+                //toastr.success('Wish list saved');
+                toastr.success('Wish list saved');
+            }
+        }).error(function (data) {
+            // toastr.success('AddtoWishList error-' + data);
+            toastr.error('AddtoWishList error-' + data);
+        });
+    };
+}]);
+
+appCtrl.controller('wishlist-ctrl', ['$rootScope', 'webapi', 'checkAuthenticated', function ($rootScope, webapi, checkAuthenticated) {
+    $('.navbar-absolute-bottom').show();
+    if (checkAuthenticated.IsAuthenticated() == false) {
+        $location.path("/login");
+        return false;
+    }
+
+    if (navigator.onLine) {
+        webapi.Call('GET', urlServerUtil.WishListUrl + '?UserId=' + $rootScope.globals.currentUser.guid, "{}").success(function (data, status, headers, config) {
+            $rootScope.Wishlists = data;
+        }).error(function (data) {
+            toastr.error('wishlist-ctrl -' + data);
+        });
+    } else {
+        $rootScope.myDB.transaction(function (tx) {
+            var query = 'select * from wishlist';
+            tx.executeSql(query, [], getResult);
+        });
+    }
+
+    function getResult(tx, result) {
+        if (result.rows.length < 1) {
+            // toastr.success('No tailor added in your wishlist');
+            toastr.warning('No tailor added in your wishlist');
+        }
+        else {
+            var arWishlist = new Array();
+            var i;
+            for (i = 0; i < result.rows.length; i++) {
+                arWishlist.push(result.rows.item(i));
+            }
+            $rootScope.Wishlists = arWishlist;
+        }
+    }
+}]);
+
+appCtrl.controller('deal-ctrl', ['$scope', 'webapi', function ($scope, webapi) {
     webapi.Call('GET', urlServerUtil.AllDealsUrl, "{}").success(function (data, status, headers, config) {
         $scope.AllDeals = data;
     }).error(function (data) {
@@ -642,7 +662,6 @@ appCtrl.controller('deal-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
 
 appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAuthenticated', '$location', function ($scope, $rootScope, webapi, checkAuthenticated, $location) {
     $('.navbar-absolute-bottom').show();
-    //Mendatory code for authentication
     if (checkAuthenticated.IsAuthenticated() == false) {
         $location.path("/login");
         return false;
@@ -659,7 +678,9 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
             toastr.success('New password does not match');
             return false;
         }
-        debugger;
+        if (user == undefined) {
+            toastr.success('Error in Update passord');
+        }
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, UserName: user[0].UserName, UserEmail: user[0].UserEmail, UserPhone: user[0].UserPhone, UserLocation: user[0].UserLocation, FirstName: user[0].FirstName, LastName: user[0].LastName, Password: $scope.newpassword, UserImage: user[0].UserImage == undefined ? urlServerUtil.blankImage : user[0].UserImage
         });
@@ -679,7 +700,6 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
     $('.navbar-absolute-bottom').show();
     $('#myDetailPage').show();
     $('#editDetailPage').hide();
-    //Mendatory code for authentication
     if (checkAuthenticated.IsAuthenticated() == false) {
         $location.path("/login");
         return false;
@@ -691,7 +711,6 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
         toastr.success('user-detail-ctrl -' + data);
     });
     $scope.editDetail = function (user) {
-        debugger;
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, UserName: user.UserName, UserEmail: user.UserEmail, UserPhone: user.UserPhone, UserLocation: user.UserLocation, FirstName: user.FirstName, LastName: user.LastName, UserImage: $rootScope.UserDetail == undefined ? urlServerUtil.blankImage : $rootScope.UserDetail.UserImage
         });
@@ -719,69 +738,27 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
     };
 }]);
 
+appCtrl.controller('review-ctrl', ['$rootScope', 'checkAuthenticated', '$location', '$scope', '$routeParams', 'webapi', function ($rootScope, checkAuthenticated, $location, $scope, $routeParams, webapi) {
+    //Mendatory code for authentication        
+    $('.navbar-absolute-bottom').show();
+    if (checkAuthenticated.IsAuthenticated() == false) {
+        $location.path("/login");
+        return false;
+    }
 
-appCtrl.controller('login-ctrl',
-    ['$scope', '$http', '$rootScope', '$location', 'AuthenticationService', 'webapi',
-    function ($scope, $http, $rootScope, $location, AuthenticationService, webapi) {
-        $('.navbar-absolute-bottom').show();
-        $scope.login = function () {
-            $scope.dataLoading = true;
-            webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
-                if (data != null && data != undefined && data != "null") {
-                    toastr.success('Login Successfully');
-                    debugger;
-                    $rootScope.UserInfo = data;
-                    $rootScope.showLogin = false;
-                    AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
-                    if ($rootScope.previousRoute == undefined) {
-                        $location.path('/');
-                    }
-                    else {
-                        window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
-                    }
-                } else {
-                    toastr.error('Invalid Credentials');
-                    $scope.error = data.message;
-                }
-            }).error(function (data, status) {
-                toastr.success('login -' + data + ' ' + status);
-            });
-            $scope.dataLoading = false;
-        };
-    }]);
+    $scope.writeReview = function (review) {
+        var param = JSON.stringify({
+            UserId: $rootScope.globals.currentUser.guid, UserName: review.name, TailorId: $routeParams.tailorId, Comment: review.comment, ReviewTitle: review.email, Rating: review.quality
+        });
 
-
-appCtrl.controller('review-ctrl',
-    ['$rootScope', 'checkAuthenticated', '$location', '$scope', '$routeParams', 'webapi',
-    function ($rootScope, checkAuthenticated, $location, $scope, $routeParams, webapi) {
-        //Mendatory code for authentication        
-        $('.navbar-absolute-bottom').show();
-        if (checkAuthenticated.IsAuthenticated() == false) {
-            $location.path("/login");
-            return false;
-        }
-
-
-
-
-
-
-
-
-        $scope.writeReview = function (review) {
-            var param = JSON.stringify({
-                UserId: $rootScope.globals.currentUser.guid, UserName: review.name, TailorId: $routeParams.tailorId, Comment: review.comment, ReviewTitle: review.email, Rating: review.quality
-            });
-
-            webapi.Call('POST', urlServerUtil.ReviewUrl, param).success(function (data, status, headers, config) {
-                $scope.review = null;
-                toastr.success('Review added successfully.');
-            }).error(function (data) {
-                toastr.success('writeReview -' + data);
-            });
-        };
-    }]);
-
+        webapi.Call('POST', urlServerUtil.ReviewUrl, param).success(function (data, status, headers, config) {
+            $scope.review = null;
+            toastr.success('Review added successfully.');
+        }).error(function (data) {
+            toastr.success('writeReview -' + data);
+        });
+    };
+}]);
 
 appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAuthenticated', '$location', function ($scope, $rootScope, webapi, checkAuthenticated, $location) {
     $scope.addDetail = function (user) {
@@ -800,7 +777,6 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
     };
 }]);
 
-
 appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '3', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
@@ -809,19 +785,18 @@ appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
     });
 }]);
 
-
 appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '2', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
     }).error(function (data) {
-        toastr.success('help-ctrl - ' + data);
+        toastr.success('about-ctrl - ' + data);
     });
 }]);
 
 appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
     webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.latitude + "&trend=1", "{}").success(function (data, status, headers, config) {
-        $rootScope.Tailors = data;
+        $rootScope.TrendTailors = data;
     }).error(function (data) {
-        toastr.success('searchTailorbyName 3-' + data);
+        toastr.success('Trend-' + data);
     });
 }]);

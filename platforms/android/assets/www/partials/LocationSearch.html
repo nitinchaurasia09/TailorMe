@@ -1,19 +1,10 @@
-﻿<section class="section container-fluid scrollable">
-    <!--<br /><br />
-        <style>
-            html, body, #map-canvas {
-                height: 100%;
-                margin: 0px;
-                padding: 0px;
-            }
-        </style>
-    -->
+﻿<section class="section container-fluid scrollable">   
     <div class="scrollable">
         <div class="scrollable-header"> </div>
 
         <div class="scrollable-content padding10">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="redirectToTailorListing()"> <span class="pull-left">Near Me </span> <span class="pull-right"> <i class="fa-2x fa fa-map-marker">  </i> </span></button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="getNearByTailor()"> <span class="pull-left">Near Me </span> <span class="pull-right"> <i class="fa-2x fa fa-map-marker">  </i> </span></button>
             </div>
             <angucomplete-alt id="ex2" placeholder="Search Location" pause="100" selected-object="" local-data="Location"
                               search-fields="TailorAddress" title-field="TailorAddress" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
