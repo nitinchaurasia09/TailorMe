@@ -275,10 +275,12 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
 }]);
 
 appCtrl.controller('login-ctrl',
-    ['$scope', '$http', '$rootScope', '$location', 'AuthenticationService', 'webapi',
-    function ($scope, $http, $rootScope, $location, AuthenticationService, webapi) {
+    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'webapi',
+    function ($scope, $rootScope, $location, AuthenticationService, webapi) {
+        debugger;
         $('.navbar-absolute-bottom').show();
-        $scope.login = function () {
+        $scope.GetAuthenticated = function () {
+            debugger;
             $scope.dataLoading = true;
             webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
                 if (data != null && data != undefined && data != "null") {
@@ -302,15 +304,12 @@ appCtrl.controller('login-ctrl',
             $scope.dataLoading = false;
         };
 
-        $rootScope.UserInfo.$watch(
-                    function ($scope) {
-                        alert(1);
-                    },
-                    function (newValue) {
-                        alert('new value');
-                    }
-                );
-        
+
+        $scope.$watch('UserInfo', function (value) {
+            alert('Watch');
+            alert(value);
+        });
+
         //Code after facebook and google sign in
         //var param = JSON.stringify({
         //    ID: '1', FirstName: 'N', LastName: 'M', Email: 'nm@g.com', AccType: 'FB'
@@ -344,7 +343,6 @@ appCtrl.controller('main-ctrl', ['$scope', 'webapi', '$rootScope', 'Authenticati
             $scope.$apply(function () {
                 $rootScope.latitude = position.coords.latitude;
                 $rootScope.longitude = position.coords.longitude;
-                alert($rootScope.latitude + ' ' + $rootScope.longitude);
             });
         });
     }
@@ -539,7 +537,7 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
         $rootScope.latitude = $routeParams.lat;
 
     $scope.searchTailorbyName = function (tname) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data) {
             toastr.success('Error in TailorListing Tailor name search' + data);
