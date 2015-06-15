@@ -16,6 +16,8 @@ var app = angular.module('grasimApp', [
 app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($routeProvider, $httpProvider, $locationProvider) {
     $routeProvider.when('/', { templateUrl: 'partials/home.html', controller: 'main-ctrl', reloadOnSearch: false, title: '' });
     $routeProvider.when('/help', { templateUrl: 'partials/help.html', controller: 'help-ctrl', reloadOnSearch: false, title: '' });
+    $routeProvider.when('/contactus', { templateUrl: 'partials/contactus.html', controller: 'contactus-ctrl', reloadOnSearch: false, title: '' });
+
     $routeProvider.when('/trend', { templateUrl: 'partials/tailor-trend.html', controller: 'trend-ctrl', reloadOnSearch: false, title: '' });
 
     $routeProvider.when('/LocationSearch', { templateUrl: 'partials/LocationSearch.html', controller: 'location-ctrl', reloadOnSearch: false, title: '' });

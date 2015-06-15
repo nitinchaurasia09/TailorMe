@@ -1,1 +1,37 @@
-﻿
+﻿ <!-- contact us-->
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div id="write-review">
+            <div class="write-review-form">
+                <form name="form_contactus" role="form">
+                    <fieldset>
+                        <div class="form-group has-success has-feedback">
+                            <input type="text" id="txtName" name="txtName" class="form-control" placeholder="Name is required" required  maxlength="50"/>
+                            
+                        </div>
+                        <div class="form-group has-success has-feedback">
+                            <input id="txtEmail" name="txtEmail" type="email"
+                                   class="form-control"
+                                  
+                                   placeholder="Email is required" required maxlength="150">
+                            
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <input type="text" id="txtPhone" name="txtPhone" class="form-control" placeholder="+91 ----------" required  maxlength="50"/>
+                            
+                        </div>
+
+                        <div class="form-group has-success has-feedback">
+                            <textarea class="form-control" rows="3" placeholder="Please share some details with us"></textarea>
+                        </div>
+                    </fieldset>
+                    
+                    <button type="button" class="btn btn-primary btn-lg btn-block" ng-disabled="form.$invalid">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
