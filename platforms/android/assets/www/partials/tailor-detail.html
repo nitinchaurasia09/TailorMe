@@ -53,27 +53,29 @@
         </div>
 
         <div class="tailor-detail-bottom">
-			<div class="deals">
-				<!--<img src="images/icons/deal-tag.png" />
-							
-			  <span class="font-bold">40% Off </span> <span class="font-normal font-light"> formal wears </span>-->
-                <p class="write-your-review">Deals</p>
-                <div>
-                    <div class="row" ng-repeat="deal in TailorDeals">
-                        <div class="col-sm-6">{{deal.DealPercentage}}% Off</div>
-                        <div class="col-sm-6">{{deal.DealDescription}}</div>
-                    </div>
-                    <div ng-if="TailorDeals.length==0">
-                        No Deals Available
-                    </div>
-                </div> 
-            </div>
 			
-			<!--<div class="exp-deals">
-				<img src="images/icons/Exp-deal-tag.png" /> 
-			  <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
+
+           
+			
+			
+            <div ng-repeat="deal in TailorDeals">
+                <div class="deals">
+                    <img src="images/icons/deal-tag.png" />
+                            
+              <span class="font-bold">{{deal.DealPercentage}}% Off </span> <span class="font-normal font-light"> {{deal.DealDescription}} </span>
+                </div>
+            </div>
+            <div ng-if="TailorDeals.length==0">
+                        No Deals Available
+            </div> 
+
+            <!--<div class="exp-deals">
+                <img src="images/icons/Exp-deal-tag.png" /> 
+              <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
                 
             </div>-->
+
+
 			
             <div class="portfolio">
                 <p class="title">Portfolio By <span class="name">{{TailorDetail.TailorName}}</span></p>
