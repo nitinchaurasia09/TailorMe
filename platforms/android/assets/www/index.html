@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui,user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
     
     <link rel="stylesheet" href="css/app.min.css" />
@@ -164,22 +164,28 @@
         var destinationType; // sets the format of returned value
 
         document.addEventListener("deviceready", onDeviceReady, false);
-        function onDeviceReady() {
+         function onDeviceReady() {
             var myDB = window.openDatabase("photos", "1.0", "Photos DB", 1000000);
             //myDB.transaction(processQuery);
             angular.element(document.getElementById('main-ctrl')).scope().setDb(myDB);
-           
+            document.addEventListener("offline", function () {
+                alert("No internet connection! Limited features can be used");
+            }, false);
+            document.addEventListener("online", function () {
+                alert("Yes features can be used");
+            }, false);
             // setDb(myDB);
-            document.addEventListener('offline', noInternet, false);
+            
             FastClick.attach(document.body);
-            pictureSource = navigator.camera.PictureSourceType.CAMERA;
-            destinationType = navigator.camera.DestinationType;
+            
+
+           // pictureSource = navigator.camera.PictureSourceType.CAMERA;
+            //destinationType = navigator.camera.DestinationType;
             
         }        
 
-        function noInternet() {
-            alert('No internet connection! Limited features can be used');
-        }
+        
+        
         //$(".rightSlide").click(function (e) {
         //    e.preventDefault();
         //    $("#wrapper").toggleClass("toggled");

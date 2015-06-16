@@ -32,7 +32,7 @@
                 </p>
                 <div class="icon-group">
                     <a class="icon" href="tel:{{TailorDetail.TailorPhone}}"><i class="fa fa-phone fa-2x"></i></a>
-                    <a class="icon"><i class="fa fa-envelope-o fa-2x"></i></a>
+                    <a class="icon" href="mailto:{{TailorDetail.TailorEmail}}"><i class="fa fa-envelope-o fa-2x"></i></a>
                     <a class="icon" ng-click="AddtoWishList('{{TailorDetail.GUID}}','{{globals.currentUser.guid}}','{{TailorDetail.TailorName}}','{{TailorDetail.TailorAddress}}','{{TailorDetail.AverageRating}}','{{TailorDetail.TailorImage}}')"><i class="fa fa-heart-o fa-2x"></i></a>
                     <!--<a class="icon"><i class="fa fa-heart-o fa-2x"></i></a>-->
                 </div>

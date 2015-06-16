@@ -3,6 +3,7 @@
 .slider {
     width: 800px;
     height: 400px;
+       
     overflow: hidden;
     position: relative;
     background: #e6e6e6;
@@ -30,14 +31,14 @@
 }
 
 .arrow.prev {
-    opacity: 0.2;
+    opacity: 0.8;
     left: 20px;
     background-image: url(../images/deleteImages/paddle_prev_999.png);
     transition: 0.2s linear all;
 }
 
 .arrow.next {
-    opacity: 0.2;
+    opacity: 0.8;
     right: 20px;
     background-image: url(../images/deleteImages/paddle_next_999.png);
     transition: 0.2s linear all;
@@ -150,7 +151,7 @@ NAVImg
                 </div>-->
 
                 <div class="container slider">
-                    <img ng-repeat="slide in slides" class="slide slide-animation"
+                    <img ng-repeat="slide in slides" class="slide slide-animation" id="sliderCtrl"
                          ng-hide="!isCurrentSlideIndex($index)" ng-src="{{slide.image}}">
                     <a class="arrow prev" ng-click="nextSlide()"></a>
                     <a class="arrow next" ng-click="prevSlide()"></a>
