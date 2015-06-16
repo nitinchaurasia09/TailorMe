@@ -135,6 +135,7 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
 
 
     webapi.Call('GET', urlServerUtil.TailorDetailUrl + 'TailorId=' + $routeParams.tailorId + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
+        debugger;
         $scope.TailorDetail = data;
         CreateMap();
     }).error(function (data) {
@@ -305,10 +306,10 @@ appCtrl.controller('login-ctrl',
         };
 
 
-        $scope.$watch('UserInfo', function (value) {
-            alert('Watch');
-            alert(value);
-        });
+        //$scope.$watch('UserInfo', function (value) {
+        //    alert('Watch');
+        //    alert(value);
+        //});
 
         //Code after facebook and google sign in
         //var param = JSON.stringify({
@@ -797,4 +798,125 @@ appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
     }).error(function (data) {
         toastr.success('Trend-' + data);
     });
+    $('.navbar-absolute-bottom').show();;
+    $scope.showActions = 0;
+    $scope.showcss = [];
+    $scope.getSwipe = function (ctrl, pos, current) {
+        if ($scope.showcss.length == 0) {
+            for (var i = 0; i < $rootScope.TrendTailors.length; i++) {
+                if (i != current.$index)
+                    $scope.showcss.push('position-center');
+            }
+        }
+        /* for (var i = 0; i <= $rootScope.TrendTailors.length; i++) {
+             debugger;
+            // toastr.success(i + ',' + current.$index);
+             if (i != current.$index) {
+                 $("div[id*=lstTail]").removeClass('position-left');
+                 $("div[id*=lstTail]").removeClass('position-right');
+                 $("div[id*=lstTail]").addClass('position-center');
+             }
+         }*/
+        //if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-center') {
+        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-center')) {
+            for (var i = 0; i < $rootScope.TrendTailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $scope.showcss[current.$index] = 'position-left';
+            $("#" + ctrl).removeClass('position-center');
+            $("#" + ctrl).addClass('position-left');
+        }
+        // if (pos == 'position-left' && $scope.showcss[current.$index] == 'position-right') {
+        if (pos == 'position-left' && $("#" + ctrl).hasClass('position-right')) {
+            for (var i = 0; i < $rootScope.TrendTailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-right');
+            $("#" + ctrl).addClass('position-center');
+            $scope.showcss[current.$index] = 'position-center';
+        }
+
+        // if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-center') {
+        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-center')) {
+            for (var i = 0; i < $rootScope.TrendTailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-center');
+            $("#" + ctrl).addClass('position-right');
+            $scope.showcss[current.$index] = 'position-right';
+        }
+
+        //if (pos == 'position-right' && $scope.showcss[current.$index] == 'position-left') {
+        if (pos == 'position-right' && $("#" + ctrl).hasClass('position-left')) {
+            for (var i = 0; i < $rootScope.TrendTailors.length; i++) {
+                $scope.showcss.push('position-center');
+                $("div[id*=lstTail]").removeClass('position-left');
+                $("div[id*=lstTail]").removeClass('position-right');
+                $("div[id*=lstTail]").addClass('position-center');
+            }
+            $("#" + ctrl).removeClass('position-left');
+            $("#" + ctrl).addClass('position-center');
+            $scope.showcss[current.$index] = 'position-center';
+        }
+        $scope.showcss.length = 0;
+    }
+
+    //Need correction in this.
+    $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
+        debugger;
+        if (checkAuthenticated.IsAuthenticated() == false) {
+            $location.path("/login");
+            return false;
+        }
+        // $rootScope.myDB.transaction(processQuery);
+        $scope.tailId = tId;
+        $scope.usId = $rootScope.globals.currentUser.guid;
+        $scope.tName = tName;
+        $scope.address = addres;
+        $scope.rating = rating;
+        $scope.image = image;
+
+        //Sumit's code
+        $rootScope.myDB.transaction(function (tx) {
+            tx.executeSql('Create table if not exists wishlist (userid ,tailorId ,tailorName,address,rating,image)');
+            var query = 'select * from wishlist where userid="' + uId + '" and tailorId="' + tId + '"';
+            tx.executeSql(query, [], getResult);
+            //tx.executeSql('Delete from wishlist');
+            // tx.executeSql('Insert into wishlist values("' + uId + '","' + tId + '","' + tName + '","' + addres + '","' + rating + '","'+image+'")');
+        });
+        function getResult(tx, result) {
+            var i;
+            if (result.rows.length > 0) {
+                //toastr.success('Tailor already added to wishlist');
+                toastr.warning('Tailor already added to wishlist');
+            }
+            else {
+                tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
+                //toastr.success('Tailor added to your wishlist');
+                toastr.success('Tailor added to your wishlist');
+            }
+        }
+        $scope.wishList = { TailorID: "", UserID: "" };
+        var param = JSON.stringify({
+            UserID: $scope.usId, TailorId: $scope.tailId
+        });
+        webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
+            if (data == true) {
+                //toastr.success('Wish list saved');
+                toastr.success('Wish list saved');
+            }
+        }).error(function (data) {
+            // toastr.success('AddtoWishList error-' + data);
+            toastr.error('AddtoWishList error-' + data);
+        });
+    };
 }]);

@@ -21,7 +21,7 @@
                 <div class="tailor-listing position-center" id="{{ 'lstTail-' + $index }}" ng-swipe-left="getSwipe('lstTail-' + $index, 'position-left', this)" ng-swipe-right="getSwipe('lstTail-' + $index,'position-right', this)">
                     <div class="tailor-distance">
                         <div class="tailor-distance-content">
-                            {{Tailor.KiloMeter}} km <p>away</p>
+                            {{(Tailor.KiloMeter).toFixed(2)}} km <p>away</p>
                         </div>
                     </div>
                     <span class="tailor-details">
