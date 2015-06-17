@@ -13,7 +13,8 @@
 //    AllDealsUrl: 'http://localhost:58938/api/Utility/AllDeals',
 //    GetLocationsUrl: 'http://localhost:58938/api/Utility/GetLocationsByName',
 //    PageDescriptionUrl: 'http://localhost:58938/api/Utility/GetPageByPageId?guid=',
-//    blankImage: 'http://localhost:58938/Images/UserImages/noimage.png'
+//    blankImage: 'http://localhost:58938/Images/UserImages/noimage.png',
+//    QueryUrl: 'http://localhost:58938/api/Query'
 //}
 
 //var urlServerUtil = {
@@ -46,5 +47,6 @@ var urlServerUtil = {
     AllDealsUrl: 'http://grasimapi.amplodis.com/api/Utility/AllDeals',
     GetLocationsUrl: 'http://grasimapi.amplodis.com/api/Utility/GetLocationsByName',
     PageDescriptionUrl: 'http://grasimapi.amplodis.com/api/Utility/GetPageByPageId?guid=',
-    blankImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png'
+    blankImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png',
+    QueryUrl: 'http://grasimadmin.amplodis.com/api/Query'
 }

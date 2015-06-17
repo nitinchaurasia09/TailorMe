@@ -3,31 +3,42 @@
     <div class="scrollable-content">
         <div id="write-review">
             <div class="write-review-form">
-                <form name="form_contactus" role="form">
+                <form name="form" role="form">
                     <fieldset>
                         <div class="form-group has-success has-feedback">
-                            <input type="text" id="txtName" name="txtName" class="form-control" placeholder="Name is required" required  maxlength="50"/>
-                            
+                            <input type="text" id="txtName" name="txtName" ng-model="Query.UserName" class="form-control" placeholder="Name is required" required maxlength="50" />
+                            <span style="color: red" ng-show="form.txtName.$dirty && form.txtName.$invalid">
+                                <span ng-show="form.txtName.$error.required">Username is required.</span>
+                            </span>
                         </div>
                         <div class="form-group has-success has-feedback">
                             <input id="txtEmail" name="txtEmail" type="email"
-                                   class="form-control"
-                                  
+                                   class="form-control" ng-model="Query.Email"
                                    placeholder="Email is required" required maxlength="150">
-                            
+                            <span style="color: red" ng-show="form.txtEmail.$dirty && form.txtEmail.$invalid || form.txtEmail.$error.required">
+                                Invalid email.
+                            </span>
                         </div>
 
                         <div class="form-group has-success has-feedback">
-                            <input type="text" id="txtPhone" name="txtPhone" class="form-control" placeholder="+91 ----------" required  maxlength="50"/>
-                            
+                            <input id="txtPhone" name="txtPhone" class="form-control" type="tel" placeholder="Phone is required" ng-model="Query.UserPhone" required phone-only />
+                            <span style="color: red" ng-show="form.txtPhone.$dirty && form.txtPhone.$invalid">
+                                <span ng-show="form.txtPhone.$error.required || form.txtPhone.$error.txtPhone">Invalid phone.</span>
+                            </span>
+
                         </div>
 
                         <div class="form-group has-success has-feedback">
-                            <textarea class="form-control" rows="3" placeholder="Please share some details with us"></textarea>
+                            <textarea id="txtDesc" name="txtDesc" type="text"
+                                   class="form-control"
+                                   placeholder="Description is required" ng-model="Query.Description" required />
+                            <span style="color: red" ng-show="form.txtDesc.$dirty && form.txtDesc.$invalid">
+                                <span ng-show="form.txtDesc.$error.required">Description is required.</span>
+                            </span>
                         </div>
                     </fieldset>
-                    
-                    <button type="button" class="btn btn-primary btn-lg btn-block" ng-disabled="form.$invalid">Send to Us</button>
+
+                    <button type="button" class="btn btn-primary btn-lg btn-block" ng-disabled="form.$invalid" ng-click="addQuery(Query)">Send to Us</button>
                 </form>
             </div>
         </div>

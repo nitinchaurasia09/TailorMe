@@ -920,3 +920,18 @@ appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
         });
     };
 }]);
+
+appCtrl.controller('contactus-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
+    $scope.addQuery = function (Query) {
+        debugger;
+        var param = JSON.stringify({
+            Guid: '', UserName: Query.UserName, UserEmail: Query.Email, UserPhone: Query.UserPhone, QueryDescription: Query.Description, TailorId: '', DeleteStatus: 0
+        });
+        webapi.Call('POST', urlServerUtil.QueryUrl, param).success(function (data, status, headers, config) {
+            $scope.Query = null;
+            toastr.success('Query Added Successfully');
+        }).error(function (data) {
+            toastr.success('addDetail -' + data);
+        });
+    };
+}]);
