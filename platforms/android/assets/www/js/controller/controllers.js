@@ -793,7 +793,7 @@ appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
 }]);
 
 appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($scope, $rootScope, webapi) {
-    webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.longitude + "&Longitude=" + $rootScope.latitude + "&trend=1", "{}").success(function (data, status, headers, config) {
+    webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude + "&trend=1", "{}").success(function (data, status, headers, config) {
         $rootScope.TrendTailors = data;
     }).error(function (data) {
         toastr.success('Trend-' + data);
