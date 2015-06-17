@@ -380,7 +380,7 @@ appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function 
     }
     $scope.getNearByTailor = function () {
         if ($rootScope.latitude != '' && $rootScope.latitude != undefined && $rootScope.latitude != null) {
-            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude;
+            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1";
         }
         else {
             toastr.success('Location Service is not enable in your mobile.');
@@ -544,7 +544,7 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
             toastr.success('Error in TailorListing Tailor name search' + data);
         });
     }
-
+    debugger;
     if ($routeParams.tname != null) {
         $scope.searchTailorbyName($routeParams.tname);
     }
@@ -555,14 +555,20 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
             toastr.success('Feature/Category search-' + data);
         });
     }
-    else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null) {
+    else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null && $routeParams.nearby == null) {
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data, err, mess) {
             toastr.success('Near by search' + data);
         });
     }
-
+    else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null && $routeParams.nearby != null) {
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long + "&nearby=" + $routeParams.nearby, "{}").success(function (data, status, headers, config) {
+            $rootScope.Tailors = data;
+        }).error(function (data, err, mess) {
+            toastr.success('Near by search' + data);
+        });
+    }
 
     //Need correction in this.
     $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
