@@ -11,7 +11,7 @@
         Find tailors near you
     </description>
 
-    <author href="http://avsktechnology.com" email="info@avsktechnology.com">
+    <author href="http://amplodis.com" email="info@avsktechnology.com">
         AVSK Technology - A reliable name in services
     </author>
 
@@ -62,6 +62,9 @@
     <splash src="res/screen/ios/Default-736h.png" width="1242" height="2208"/>
     <splash src="res/screen/ios/Default-Landscape-736h.png" width="2208" height="1242"/>-->
   </platform>
-  <access origin="*"/>
+  <access origin="*" />
+    <!-- These are needed in Cordova 3.6 and newer for Android -->
+    <access origin="mailto:*" launch-external="yes"/>
+    <access origin="tel:*" launch-external="yes"/>
   <preference name="SplashScreenDelay" value="5000" />
 </widget>
