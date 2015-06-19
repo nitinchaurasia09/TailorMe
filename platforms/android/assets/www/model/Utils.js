@@ -14,7 +14,7 @@
 //    GetLocationsUrl: 'http://localhost:58938/api/Utility/GetLocationsByName',
 //    PageDescriptionUrl: 'http://localhost:58938/api/Utility/GetPageByPageId?guid=',
 //    blankImage: 'http://localhost:58938/Images/UserImages/noimage.png',
-//    QueryUrl: 'http://localhost:58938/api/Query'
+//    QueryUrl: 'http://localhost:58938/api/QueryDetail'
 //}
 
 //var urlServerUtil = {
@@ -48,5 +48,5 @@ var urlServerUtil = {
     GetLocationsUrl: 'http://grasimapi.amplodis.com/api/Utility/GetLocationsByName',
     PageDescriptionUrl: 'http://grasimapi.amplodis.com/api/Utility/GetPageByPageId?guid=',
     blankImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png',
-    QueryUrl: 'http://grasimadmin.amplodis.com/api/Query'
+    QueryUrl: 'http://grasimapi.amplodis.com/api/QueryDetail'
 }
