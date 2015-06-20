@@ -25,7 +25,7 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($r
 
     $routeProvider.when('/tailorlisting/:lat/:long', { templateUrl: 'partials/tailor-listing.html', controller: 'tailorListing-ctrl', reloadOnSearch: false, title: '' });
 
-    $routeProvider.when('/tailorlisting/:lat/:long/:nearby', { templateUrl: 'partials/tailor-listing.html', controller: 'tailorListing-ctrl', reloadOnSearch: false, title: '' });
+    $routeProvider.when('/tailorlisting/:lat/:long/:nearby/:near', { templateUrl: 'partials/tailor-listing.html', controller: 'tailorListing-ctrl', reloadOnSearch: false, title: '' });
 
     $routeProvider.when('/tailorlisting/:tname/:lat/:long', { templateUrl: 'partials/tailor-listing.html', controller: 'tailorListing-ctrl', reloadOnSearch: false, title: '' });
     //Without lat long

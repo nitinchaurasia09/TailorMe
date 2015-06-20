@@ -8742,7 +8742,7 @@ ul.rating {
 .slider {
   position: relative;
   padding: 5px;
-  width: 610px;
+  /*width: 610px;*/
   margin: auto;
   margin-top: 40px;
 }
