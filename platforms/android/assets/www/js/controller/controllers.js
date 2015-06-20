@@ -331,7 +331,7 @@ appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function 
     }
     $scope.getNearByTailor = function () {
         if ($rootScope.latitude != '' && $rootScope.latitude != undefined && $rootScope.latitude != null) {
-            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1";
+            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1/1";
         }
         else {
             toastr.success('Location Service is not enable in your mobile.');
@@ -738,7 +738,7 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
             $scope.user = null;
-            if (data == true)
+            if (data == "true")
                 toastr.success('User Added Successfully');
             else
                 toastr.success('User already exists');

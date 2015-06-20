@@ -13,22 +13,8 @@
 //    AllDealsUrl: 'http://localhost:58938/api/Utility/AllDeals',
 //    GetLocationsUrl: 'http://localhost:58938/api/Utility/GetLocationsByName',
 //    PageDescriptionUrl: 'http://localhost:58938/api/Utility/GetPageByPageId?guid=',
-//    blankImage: 'http://localhost:58938/Images/UserImages/noimage.png'
-//}
-
-//var urlServerUtil = {
-//    TailorData: 'http://grasimapi.avsktechnology.com/api/Search/SearchTailor?',
-//    TailorSearchUrl: 'http://grasimapi.avsktechnology.com/api/Search/SearchTailor?',
-//    FeatureCategory: 'http://grasimapi.avsktechnology.com/api/Utility/FeartureCategoriesList',
-//    TailorGalleryUrl: 'http://grasimapi.avsktechnology.com/api/Gallery?',
-//    TailorDetailUrl: 'http://grasimapi.avsktechnology.com/api/Search/SearchTailor?',
-//    UserLoginUrl: 'http://grasimapi.avsktechnology.com/api/User?',
-//    ReviewUrl: 'http://grasimapi.avsktechnology.com/api/Review/',
-//    UserUrl: 'http://grasimapi.avsktechnology.com/api/User',
-//    ExternalUserUrl: 'http://grasimapi.avsktechnology.com/api/ExternalUser',
-//    WishListUrl: 'http://grasimapi.avsktechnology.com/api/WishList',
-//    TailorDealsUrl: 'http://grasimapi.avsktechnology.com/api/Utility/DealsByTailorId?',
-//    AllDealsUrl: 'http://grasimapi.avsktechnology.com/api/Utility/AllDeals',
+//    blankImage: 'http://localhost:58938/Images/UserImages/noimage.png',
+//    QueryUrl: 'http://localhost:58938/api/QueryDetail'
 //}
 
 var urlServerUtil = {
@@ -46,5 +32,6 @@ var urlServerUtil = {
     AllDealsUrl: 'http://grasimapi.amplodis.com/api/Utility/AllDeals',
     GetLocationsUrl: 'http://grasimapi.amplodis.com/api/Utility/GetLocationsByName',
     PageDescriptionUrl: 'http://grasimapi.amplodis.com/api/Utility/GetPageByPageId?guid=',
-    blankImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png'
+    blankImage: 'http://grasimadmin.amplodis.com/Images/UserImages/noimage.png',
+    QueryUrl: 'http://grasimapi.amplodis.com/api/QueryDetail'
 }
