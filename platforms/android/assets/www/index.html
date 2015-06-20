@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
-    
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="css/app.min.css" />
     <link rel="stylesheet" href="css/responsive.min.css" />
     
@@ -21,6 +21,12 @@
     <!--<span us-spinner="{radius:30, width:8, length: 16}"></span>-->
     <div id="loaderDiv" loader>
         <img src="images/ajax-loader.gif" class="ajax-loader" />
+    </div>
+    <div id="openModal" class="modalDialog">
+    <div>
+        <a href="#close" title="Close" class="close" ng-click="OpenModalHelp()">X</a>
+        <img src="images/help.png" class="help-loader" />
+    </div>
     </div>
     <!--Right Side bar-->
     <!-- Sidebar right -->
@@ -164,22 +170,28 @@
         var destinationType; // sets the format of returned value
 
         document.addEventListener("deviceready", onDeviceReady, false);
-        function onDeviceReady() {
+         function onDeviceReady() {
             var myDB = window.openDatabase("photos", "1.0", "Photos DB", 1000000);
             //myDB.transaction(processQuery);
             angular.element(document.getElementById('main-ctrl')).scope().setDb(myDB);
-           
+            document.addEventListener("offline", function () {
+                alert("No internet connection! Limited features can be used");
+            }, false);
+            document.addEventListener("online", function () {
+                alert("Yes features can be used");
+            }, false);
             // setDb(myDB);
-            document.addEventListener('offline', noInternet, false);
+            
             FastClick.attach(document.body);
-            pictureSource = navigator.camera.PictureSourceType.CAMERA;
-            destinationType = navigator.camera.DestinationType;
+            
+
+           // pictureSource = navigator.camera.PictureSourceType.CAMERA;
+            //destinationType = navigator.camera.DestinationType;
             
         }        
 
-        function noInternet() {
-            alert('No internet connection! Limited features can be used');
-        }
+        
+        
         //$(".rightSlide").click(function (e) {
         //    e.preventDefault();
         //    $("#wrapper").toggleClass("toggled");

@@ -2,18 +2,18 @@
     <div class="scrollable">
         <div class="scrollable-header search-form-section">
             <div class="search-form-heading">
-                <h4>Search Taillor</h4>
+                <h4>Search Tailor</h4>
             </div>
-
-            <form class="search-form" role="search">
-                <div id="search" class="filter-parent">
-                    <label for="filter-by"><a href="#/tailorlisting/{{tailorNameSearch}}/{{latitude}}/{{longitude}}"><i class="fa fa-search"></i></a></label>
-                    <div style="position: relative; height: 46px; display: block;">
-                        <input tabindex="-1" class="form-control  hint" style="position: absolute;">
-                        <input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q">
-                    </div>
-                </div>
-            </form>
+			
+			<form class="search-form" role="search">
+				<div id="search" class="filter-parent">
+				  <label for="filter-by"><a href="#/tailorlisting/{{tailorNameSearch}}/{{latitude}}/{{longitude}}"><i class="fa fa-search"></i></a></label>
+				  <div style="position: relative; height: 46px; display: block;">
+					<input tabindex="-1" class="form-control  hint" style="position: absolute;">
+              <button type="submit" ng-click='submitsearchform("/tailorlisting/{{tailorNameSearch}}/{{latitude}}/{{longitude}}")' style="width:1px;height:1px;display:none" />
+					<input ng-model="tailorNameSearch" tabindex="1" class="form-control " id="filter-by" placeholder="Search Tailor by name" style="background-color: transparent; position: relative;" name="q"></div>
+				</div>
+			</form>
         </div>
 
         <div class="scrollable-content">
