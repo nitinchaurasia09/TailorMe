@@ -32,7 +32,7 @@
                 </p>
                 <div class="icon-group">
                     <a class="icon" href="tel:{{TailorDetail.TailorPhone}}"><i class="fa fa-phone fa-2x"></i></a>
-                    <a class="icon"><i class="fa fa-envelope-o fa-2x"></i></a>
+                    <a class="icon" href="mailto:{{TailorDetail.TailorEmail}}"><i class="fa fa-envelope-o fa-2x"></i></a>
                     <a class="icon" ng-click="AddtoWishList('{{TailorDetail.GUID}}','{{globals.currentUser.guid}}','{{TailorDetail.TailorName}}','{{TailorDetail.TailorAddress}}','{{TailorDetail.AverageRating}}','{{TailorDetail.TailorImage}}')"><i class="fa fa-heart-o fa-2x"></i></a>
                     <!--<a class="icon"><i class="fa fa-heart-o fa-2x"></i></a>-->
                 </div>
@@ -46,18 +46,18 @@
                         <i class="fa fa-location-arrow pull-left fa-2x"></i><span class="distance-number">&nbsp;{{(TailorDetail.KiloMeter).toFixed(2)}}  km </span> <span class"">Away</span>
                     </span>
                 </div>
-				
-				
+                
+                
             </div>
-			
+            
         </div>
 
         <div class="tailor-detail-bottom">
-			
+            
 
            
-			
-			
+            
+            
             <div ng-show="TailorDetail.Deals" ng-repeat="deal in TailorDeals">
                 <div class="deals">
                     <img src="images/icons/deal-tag.png" />
@@ -69,20 +69,20 @@
                 No Deals Available
             </div>
 
-			<div ng-show="TailorDetail.Express" class="exp-deals">
+            <div ng-show="TailorDetail.Express" class="exp-deals">
                 <img src="images/icons/Exp-deal-tag.png" />
                 <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
 
             </div>
-			
+            
             <!--<div class="exp-deals">
                 <img src="images/icons/Exp-deal-tag.png" /> 
               <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
                 
             </div>-->
-			
-			
-					
+            
+            
+                    
             <div class="portfolio">
                 <p class="title">Portfolio By <span class="name">{{TailorDetail.TailorName}}</span></p>
                 <div class="portfolio-images-group">
@@ -120,13 +120,13 @@
                     </div>
                     
                 </div>
-				<div class="write-your-review"><a href="#/review/{{TailorDetail.GUID}}">Write your review</a></div>
+                <div class="write-your-review"><a href="#/review/{{TailorDetail.GUID}}">Write your review</a></div>
                 <div id="map"></div>
                     <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
                         <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
                     </div>
                 <div class="write-your-review">Direction</div>
-				<!--<div class="review-map" id="map-canvas">
+                <!--<div class="review-map" id="map-canvas">
                 </div>-->
                
             </div>
