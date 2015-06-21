@@ -46,13 +46,43 @@
                         <i class="fa fa-location-arrow pull-left fa-2x"></i><span class="distance-number">&nbsp;{{(TailorDetail.KiloMeter).toFixed(2)}}  km </span> <span class"">Away</span>
                     </span>
                 </div>
-				
-				
+                
+                
             </div>
-			
+            
         </div>
 
         <div class="tailor-detail-bottom">
+            
+
+           
+            
+            
+            <div ng-show="TailorDetail.Deals" ng-repeat="deal in TailorDeals">
+                <div class="deals">
+                    <img src="images/icons/deal-tag.png" />
+                            
+              <span class="font-bold">{{deal.DealPercentage}}% Off </span> <span class="font-normal font-light"> {{deal.DealDescription}} </span>
+                </div>
+            </div>
+            <div ng-show="TailorDetail.Deals" ng-if="TailorDeals.length==0">
+                No Deals Available
+            </div>
+
+            <div ng-show="TailorDetail.Express" class="exp-deals">
+                <img src="images/icons/Exp-deal-tag.png" />
+                <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
+
+            </div>
+            
+            <!--<div class="exp-deals">
+                <img src="images/icons/Exp-deal-tag.png" /> 
+              <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
+                
+            </div>-->
+            
+            
+                    
             <div class="portfolio">
                 <p class="title">Portfolio By <span class="name">{{TailorDetail.TailorName}}</span></p>
                 <div class="portfolio-images-group">
@@ -68,25 +98,11 @@
                         <a href="#/tailorgallery/{{TailorDetail.GUID}}"><img class="view-more-plus" src="images/icons/view-more-plus.png"></a>
                     </div>
                 </div>
-            </div>            
-            <br />
-            <div ng-show="TailorDetail.Deals" class="write-your-review">Deals</div>
-            <div ng-show="TailorDetail.Deals" ng-repeat="deal in TailorDeals">
-                <div class="deals">
-                    <img src="images/icons/deal-tag.png" />
-                    <span class="font-bold">{{deal.DealPercentage}}% Off </span> <span class="font-normal font-light"> {{deal.DealDescription}} </span>
-                </div>
             </div>
-            <div ng-show="TailorDetail.Deals" ng-if="TailorDeals.length==0">
-                No Deals Available
-            </div>
-            <div ng-show="TailorDetail.Express" class="exp-deals">
-                <img src="images/icons/Exp-deal-tag.png" />
-                <span class="font-bold">24 Hour</span> <span class="font-normal font-light">Delivery</span>
+            
 
-            </div>
             <div class="reviews">
-                <div class="write-your-review">Reviews</div>
+                <p class="title">Reviews</p>
                 <div class="reviews-list">
                     <div class="reviews-list-item" ng-repeat="rev in TailorDetail.ReviewList">
                         <div class="review-image">
@@ -104,17 +120,13 @@
                     </div>
                     
                 </div>
-                <div class="pull-right">
-                    <a class="btn-primary btn-lg" href="#/review/{{TailorDetail.GUID}}">Write your review</a>
-                </div>
-                <br /><br />
-                <div class="write-your-review">Direction</div>
+                <div class="write-your-review"><a href="#/review/{{TailorDetail.GUID}}">Write your review</a></div>
                 <div id="map"></div>
                     <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
                         <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
                     </div>
-                
-				<!--<div class="review-map" id="map-canvas">
+                <div class="write-your-review">Direction</div>
+                <!--<div class="review-map" id="map-canvas">
                 </div>-->
                
             </div>

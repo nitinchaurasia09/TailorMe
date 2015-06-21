@@ -1,13 +1,14 @@
 'use strict';
 /* Controllers */
 var appCtrl = angular.module('App.controllers', ['ui.bootstrap', 'ngAnimate', 'ngTouch', 'angucomplete-alt']);
-
+var GlobalDirection='left';
 appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$routeParams', function ($scope, $rootScope, webapi, $routeParams) {
     webapi.Call('GET', urlServerUtil.TailorDetailUrl + 'TailorId=' + $routeParams.tailorId + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
         $scope.TailorDetail = data;
     }).error(function (data, err, mess) {
-        toastr.success('Error while fetching tailor details -' + data);
+        toastr.error('Error while fetching tailor details -' + data);
     });
+    
     webapi.Call('GET', urlServerUtil.TailorGalleryUrl + 'TailorId=' + $routeParams.tailorId, "{}").success(function (data, status, headers, config) {
         $rootScope.TailorGallery = data;
         $('.navbar-absolute-bottom').show();
@@ -19,6 +20,7 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
         }
 
         $scope.direction = 'left';
+        
         $scope.currentIndex = 0;
 
         $scope.setCurrentSlideIndex = function (index) {
@@ -32,19 +34,19 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
 
         $scope.prevSlide = function () {
 
-            $scope.direction = 'left';
+             GlobalDirection = 'left';
             $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
 
         };
 
         $scope.nextSlide = function () {
 
-            $scope.direction = 'right';
+            GlobalDirection = 'right';
             $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
 
         };
     }).error(function (data, err, mess) {
-        toastr.success('Error while fetching gallery details -' + data);
+        toastr.error('Error while fetching gallery details -' + data);
     });
     $scope.showModal = false;
     $scope.toggleModal = function () {
@@ -55,7 +57,7 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
     return {
         addClass: function (element, className, done) {
             if (className == 'ng-hide') {
-                TweenMax.to(element, 0.5, { left: -element.parent().width(), onComplete: done });
+                TweenMax.to(element, 0.5, { right: -element.parent().width(), onComplete: done });
             }
             else {
                 done();
@@ -64,9 +66,14 @@ appCtrl.controller('tailorGallery-ctrl', ['$scope', '$rootScope', 'webapi', '$ro
         removeClass: function (element, className, done) {
             if (className == 'ng-hide') {
                 element.removeClass('ng-hide');
-
-                TweenMax.set(element, { left: element.parent().width() });
-                TweenMax.to(element, 0.5, { left: 0, onComplete: done });
+                if (GlobalDirection == 'left') {
+                    TweenMax.set(element, { left: element.parent().width() });
+                    TweenMax.to(element, 0.5, { left: 0, onComplete: done });
+                }
+                else if (GlobalDirection == 'right') {
+                    TweenMax.set(element, { right: element.parent().width() });
+                    TweenMax.to(element, 0.5, { right: 0, onComplete: done });
+                }
             }
             else {
                 done();
@@ -82,64 +89,18 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
     webapi.Call('GET', urlServerUtil.TailorDealsUrl + 'TailorId=' + $routeParams.tailorId, "{}").success(function (data, status, headers, config) {
         $scope.TailorDeals = data;
     }).error(function (data, err, mess) {
-        toastr.success('tailor-Detail-ctrl -' + data);
+        toastr.error('tailor-Detail-ctrl -' + data);
     });
 
     $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
         debugger;
-        if (checkAuthenticated.IsAuthenticated() == false) {
-            $location.path("/login");
-            return false;
-        }
-        // $rootScope.myDB.transaction(processQuery);
-        $scope.tailId = tId;
-        $scope.usId = $rootScope.globals.currentUser.guid;
-        $scope.tName = tName;
-        $scope.address = addres;
-        $scope.rating = rating;
-        $scope.image = image;
-
-        //Sumit's code
-        $rootScope.myDB.transaction(function (tx) {
-            tx.executeSql('Create table if not exists wishlist (userid ,tailorId ,tailorName,address,rating,image)');
-            var query = 'select * from wishlist where userid="' + uId + '" and tailorId="' + tId + '"';
-            tx.executeSql(query, [], getResult);
-            //tx.executeSql('Delete from wishlist');
-            // tx.executeSql('Insert into wishlist values("' + uId + '","' + tId + '","' + tName + '","' + addres + '","' + rating + '","'+image+'")');
-        });
-        function getResult(tx, result) {
-            var i;
-            if (result.rows.length > 0) {
-                //toastr.success('Tailor already added to wishlist');
-                toastr.warning('Tailor already added to wishlist');
-            }
-            else {
-                tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
-                //toastr.success('Tailor added to your wishlist');
-                toastr.success('Tailor added to your wishlist');
-            }
-        }
-        $scope.wishList = { TailorID: "", UserID: "" };
-        var param = JSON.stringify({
-            UserID: $scope.usId, TailorId: $scope.tailId
-        });
-        webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
-            if (data == true) {
-                // toastr.success('Wish list saved');
-                toastr.success('Wish list saved');
-            }
-        }).error(function (data) {
-            toastr.success('AddtoWishList -' + data);
-        });
-    };
-
-
+    }
     webapi.Call('GET', urlServerUtil.TailorDetailUrl + 'TailorId=' + $routeParams.tailorId + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
         debugger;
         $scope.TailorDetail = data;
         CreateMap();
     }).error(function (data, err, mess) {
-        toastr.success('AddtoWishList 2-' + data);
+        toastr.error('AddtoWishList 2-' + data);
     });
 
 
@@ -174,11 +135,12 @@ appCtrl.controller('tailor-Detail-ctrl', ['$scope', '$rootScope', 'webapi', 'che
                 infoWindow.setContent('<h2>' + $scope.TailorDetail.TailorName + '</h2>');
                 infoWindow.open($scope.map, marker);
             });
-            $scope.map.setCenter(latlngbounds.getCenter());
-            $scope.map.fitBounds(latlngbounds);
             $scope.markers.push(marker);
             // $scope.map.setCenter($rootScope.latitude,$rootScope.longitude);
         }
+        $scope.map.setCenter(latlngbounds.getCenter());
+        $scope.map.fitBounds(latlngbounds);
+
         var cities = [{
             lat: $rootScope.latitude,
             long: $rootScope.longitude
@@ -285,7 +247,7 @@ appCtrl.controller('login-ctrl',
             $scope.dataLoading = true;
             webapi.Call('GET', urlServerUtil.UserLoginUrl + "UserEmail=" + $scope.username + "&Password=" + $scope.password, "{}").success(function (data, status, headers, config) {
                 if (data != null && data != undefined && data != "null") {
-                    toastr.success('Login Successfully');
+                    toastr.error('Login Successfully');
                     $rootScope.UserInfo = data;
                     $rootScope.showLogin = false;
                     AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
@@ -300,7 +262,7 @@ appCtrl.controller('login-ctrl',
                     $scope.error = data.message;
                 }
             }).error(function (data, status) {
-                toastr.success('login -' + data + ' ' + status);
+                toastr.error('login -' + data + ' ' + status);
             });
             $scope.dataLoading = false;
         };
@@ -309,25 +271,6 @@ appCtrl.controller('login-ctrl',
         //$scope.$watch('UserInfo', function (value) {
         //    alert('Watch');
         //    alert(value);
-        //});
-
-        //Code after facebook and google sign in
-        //var param = JSON.stringify({
-        //    ID: '1', FirstName: 'N', LastName: 'M', Email: 'nm@g.com', AccType: 'FB'
-        //});
-        //webapi.Call('POST', urlServerUtil.ExternalUserUrl, param).success(function (data, status, headers, config) {
-        //    toastr.success('Login Successfully');
-        //    $rootScope.UserInfo = data;
-        //    $rootScope.showLogin = false;
-        //    AuthenticationService.SetCredentials(data.GUID, data.FirstName + ' ' + data.LastName, '');
-        //    if ($rootScope.previousRoute == undefined) {
-        //        $location.path('/');
-        //    }
-        //    else {
-        //        window.location.href = "#" + $rootScope.previousRoute.split('#')[1].toString();
-        //    }
-        //}).error(function (data) {
-        //    alert('Error-' + data);
         //});
 
     }]);
@@ -363,6 +306,14 @@ appCtrl.controller('main-ctrl', ['$scope', 'webapi', '$rootScope', 'Authenticati
         return false;
     }
 
+    $scope.OpenModalHelp = function () {
+       // alert(2);
+        ///$("#loaderDiv").hide();
+       // $("#helpDiv").show({modal:true});
+        //$("#openModal").addClass('show');
+        $("#openModal").toggleClass('show');
+
+    }
     $rootScope.ShowBackButton = true;
     if ($location.$$path.toString().indexOf("/", 1) < 0) {
         $rootScope.ShowBackButton = false;
@@ -383,7 +334,7 @@ appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function 
             window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1/1/1";
         }
         else {
-            toastr.success('Location Service is not enable in your mobile.');
+            toastr.error('Location Service is not enable in your mobile.');
         }
     }
 
@@ -395,7 +346,7 @@ appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function 
         }
         $scope.Location = json;
     }).error(function (data, err, mess) {
-        toastr.success('GetLocations - ' + data);
+        toastr.error('GetLocations - ' + data);
     });
     /***************************************/
 }]);
@@ -425,12 +376,20 @@ appCtrl.controller('sidebar-ctrl', ['$scope', 'webapi', '$rootScope', '$location
         });
     }
 
-    $scope.GetFeatures();
-    setInterval(function () {
-        if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
-            $scope.GetFeatures();
-        } else { return false; }
-    }, 10000);
+    $scope.submitsearchform = function (url) {
+        //toastr.error(url + $scope.tailorNameSearch+'/'+$rootScope.latitude+'/'+$rootScope.longitude);
+        $location.path(url + $scope.tailorNameSearch + '/' + $rootScope.latitude + '/' + $rootScope.longitude);
+    }
+    debugger;
+    if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
+        $scope.GetFeatures();
+
+        setInterval(function () {
+            if ($rootScope.FeaturesAndCategory == '' || $rootScope.FeaturesAndCategory == null || $rootScope.FeaturesAndCategory == undefined) {
+                $scope.GetFeatures();
+            }
+        }, 10000);
+    }
 }]);
 
 appCtrl.controller('footer-ctrl', ['$scope', 'webapi', '$rootScope', '$location', 'checkAuthenticated', 'AuthenticationService', function ($scope, webapi, $rootScope, $location, checkAuthenticated, AuthenticationService) {
@@ -538,10 +497,17 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
         $rootScope.latitude = $routeParams.lat;
 
     $scope.searchTailorbyName = function (tname) {
-        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + tname + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
+        var _searchString ='';
+        if (tname == undefined) {
+            _searchString = $scope.tailorNameSearch;
+        }
+        else
+            _searchString = tname;
+        
+        webapi.Call('GET', urlServerUtil.TailorSearchUrl + "TailorName=" + _searchString + "&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data, err, mess) {
-            toastr.success('Error in TailorListing Tailor name search' + data);
+            toastr.error('Error in TailorListing Tailor name search' + data);
         });
     }
     debugger;
@@ -552,43 +518,47 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=" + $routeParams.featId + "&Category=" + $routeParams.catId + "&Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data, err, mess) {
-            toastr.success('Feature/Category search-' + data);
+            toastr.error('Feature/Category search-' + data);
         });
     }
     else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null && $routeParams.nearby == null) {
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data, err, mess) {
-            toastr.success('Near by search' + data);
+            toastr.error('Near by search' + data);
         });
     }
     else if (($routeParams.featId == null && $routeParams.featId == undefined) && ($routeParams.tname == null && $routeParams.tname == undefined) && $routeParams.lat != null && $routeParams.nearby != null) {
         webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Latitude=" + $routeParams.lat + "&Longitude=" + $routeParams.long + "&nearby=" + $routeParams.nearby, "{}").success(function (data, status, headers, config) {
             $rootScope.Tailors = data;
         }).error(function (data, err, mess) {
-            toastr.success('Near by search' + data);
+            toastr.error('Near by search' + data);
         });
     }
 
     //Need correction in this.
     $scope.AddtoWishList = function (tId, uId, tName, addres, rating, image) {
+
+        $rootScope.GetorSaveWishList(tId, uId, tName, addres, rating, image);
+    };
+    $rootScope.GetorSaveWishList = function (_tId, _uId, _tName, _addres, _rating, _image) {
         debugger;
         if (checkAuthenticated.IsAuthenticated() == false) {
             $location.path("/login");
             return false;
         }
-        // $rootScope.myDB.transaction(processQuery);
-        $scope.tailId = tId;
-        $scope.usId = $rootScope.globals.currentUser.guid;
-        $scope.tName = tName;
-        $scope.address = addres;
-        $scope.rating = rating;
-        $scope.image = image;
+
+        var tailId = _tId;
+        var usId = $rootScope.globals.currentUser.guid;
+        var tName = _tName;
+        var address = _addres;
+        var rating = _rating;
+        var image = _image;
 
         //Sumit's code
         $rootScope.myDB.transaction(function (tx) {
             tx.executeSql('Create table if not exists wishlist (userid ,tailorId ,tailorName,address,rating,image)');
-            var query = 'select * from wishlist where userid="' + uId + '" and tailorId="' + tId + '"';
+            var query = 'select * from wishlist where userid="' + _uId + '" and tailorId="' + _tId + '"';
             tx.executeSql(query, [], getResult);
             //tx.executeSql('Delete from wishlist');
             // tx.executeSql('Insert into wishlist values("' + uId + '","' + tId + '","' + tName + '","' + addres + '","' + rating + '","'+image+'")');
@@ -600,25 +570,29 @@ appCtrl.controller('tailorListing-ctrl', ['$scope', 'webapi', '$rootScope', '$ro
                 toastr.warning('Tailor already added to wishlist');
             }
             else {
-                tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
+                tx.executeSql('Insert into wishlist values("' + usId + '","' + tailId + '","' + tName + '","' + address + '","' + rating + '","' + image + '")');
                 //toastr.success('Tailor added to your wishlist');
-                toastr.success('Tailor added to your wishlist');
+                toastr.error('Tailor added to your wishlist');
             }
         }
         $scope.wishList = { TailorID: "", UserID: "" };
         var param = JSON.stringify({
             UserID: $scope.usId, TailorId: $scope.tailId
         });
-        webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
-            if (data == true) {
-                //toastr.success('Wish list saved');
-                toastr.success('Wish list saved');
-            }
-        }).error(function (data) {
-            // toastr.success('AddtoWishList error-' + data);
+        if (navigator.onLine) {
+            webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
+                if (data == true) {
+                    // toastr.success('Wish list saved');
+                    toastr.error('Wish list saved');
+                }
+            }).error(function (data, err, mess) {
             toastr.error('AddtoWishList error-' + data);
-        });
+            });
+        }
     };
+
+
+
 }]);
 
 appCtrl.controller('wishlist-ctrl', ['$rootScope', 'webapi', 'checkAuthenticated', function ($rootScope, webapi, checkAuthenticated) {
@@ -631,7 +605,7 @@ appCtrl.controller('wishlist-ctrl', ['$rootScope', 'webapi', 'checkAuthenticated
     if (navigator.onLine) {
         webapi.Call('GET', urlServerUtil.WishListUrl + '?UserId=' + $rootScope.globals.currentUser.guid, "{}").success(function (data, status, headers, config) {
             $rootScope.Wishlists = data;
-        }).error(function (data) {
+        }).error(function (data, err, mess) {
             toastr.error('wishlist-ctrl -' + data);
         });
     } else {
@@ -661,7 +635,7 @@ appCtrl.controller('deal-ctrl', ['$scope', 'webapi', function ($scope, webapi) {
     webapi.Call('GET', urlServerUtil.AllDealsUrl, "{}").success(function (data, status, headers, config) {
         $scope.AllDeals = data;
     }).error(function (data, err, mess) {
-        toastr.success('deal-ctrl -' + data);
+        toastr.error('deal-ctrl -' + data);
     });
 }]);
 
@@ -675,25 +649,25 @@ appCtrl.controller('change-password-ctrl', ['$scope', '$rootScope', 'webapi', 'c
     webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
         $scope.login = data;
     }).error(function (data, err, mess) {
-        toastr.success('change-password-ctrl -' + data);
+        toastr.error('change-password-ctrl -' + data);
     });
 
     $scope.updatePassword = function (user) {
         if ($scope.newpassword != $scope.repassword && $scope.newpassword != undefined) {
-            toastr.success('New password does not match');
+            toastr.error('New password does not match');
             return false;
         }
         if (user == undefined) {
-            toastr.success('Error in Update passord');
+            toastr.error('Error in Update passord');
         }
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, UserName: user[0].UserName, UserEmail: user[0].UserEmail, UserPhone: user[0].UserPhone, UserLocation: user[0].UserLocation, FirstName: user[0].FirstName, LastName: user[0].LastName, Password: $scope.newpassword, UserImage: user[0].UserImage == undefined ? urlServerUtil.blankImage : user[0].UserImage
         });
         if ($scope.login[0].GUID.toString() == $rootScope.globals.currentUser.guid.toString()) {// && $scope.login[0].Password == $scope.oldpassword) {
             webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
-                toastr.success('Password updated successfully');
+                toastr.error('Password updated successfully');
             }).error(function (data, err, mess) {
-                toastr.success('updatePassword -' + data);
+                toastr.error('updatePassword -' + data);
             });
         } else {
             toastr.warning('Old password does not match');
@@ -713,14 +687,14 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
     webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
         $scope.UserDetail = data[0];
     }).error(function (data, err, mess) {
-        toastr.success('user-detail-ctrl -' + data);
+        toastr.error('user-detail-ctrl -' + data);
     });
     $scope.editDetail = function (user) {
         var param = JSON.stringify({
             GUID: $rootScope.globals.currentUser.guid, UserName: user.UserName, UserEmail: user.UserEmail, UserPhone: user.UserPhone, UserLocation: user.UserLocation, FirstName: user.FirstName, LastName: user.LastName, UserImage: $rootScope.UserDetail == undefined ? urlServerUtil.blankImage : $rootScope.UserDetail.UserImage
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
-            toastr.success('User Updated Successfully');
+            toastr.error('User Updated Successfully');
             $scope.user = null;
             webapi.Call('GET', urlServerUtil.UserUrl + "/" + $rootScope.globals.currentUser.guid).success(function (data, status, headers, config) {
                 $scope.UserDetail = data[0];
@@ -728,7 +702,7 @@ appCtrl.controller('user-detail-ctrl', ['$scope', '$rootScope', 'webapi', 'check
                 $('#editDetailPage').hide();
             });
         }).error(function (data, err, mess) {
-            toastr.success('editDetail -' + data);
+            toastr.error('editDetail -' + data);
         });
     };
 
@@ -758,9 +732,9 @@ appCtrl.controller('review-ctrl', ['$rootScope', 'checkAuthenticated', '$locatio
 
         webapi.Call('POST', urlServerUtil.ReviewUrl, param).success(function (data, status, headers, config) {
             $scope.review = null;
-            toastr.success('Review added successfully.');
+            toastr.error('Review added successfully.');
         }).error(function (data) {
-            toastr.success('writeReview -' + data);
+            toastr.error('writeReview -' + data);
         });
     };
 }]);
@@ -772,12 +746,12 @@ appCtrl.controller('add-user-ctrl', ['$scope', '$rootScope', 'webapi', 'checkAut
         });
         webapi.Call('POST', urlServerUtil.UserUrl, param).success(function (data, status, headers, config) {
             $scope.user = null;
-            if (data == "true")
-                toastr.success('User Added Successfully');
+            if (data == true)
+                toastr.error('User Added Successfully');
             else
-                toastr.success('User already exists');
+                toastr.error('User already exists');
         }).error(function (data, err, mess) {
-            toastr.success('addDetail -' + data);
+            toastr.error('addDetail -' + data);
         });
     };
 }]);
@@ -786,7 +760,7 @@ appCtrl.controller('help-ctrl', ['$scope', '$rootScope', 'webapi', function ($sc
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '3', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
     }).error(function (data, err, mess) {
-        toastr.success('help-ctrl - ' + data);
+        toastr.error('help-ctrl - ' + data);
     });
 }]);
 
@@ -794,7 +768,7 @@ appCtrl.controller('about-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
     webapi.Call('GET', urlServerUtil.PageDescriptionUrl + '2', "{}").success(function (data, status, headers, config) {
         $(".info").html(data[0].Description);
     }).error(function (data, err, mess) {
-        toastr.success('about-ctrl - ' + data);
+        toastr.error('about-ctrl - ' + data);
     });
 }]);
 
@@ -802,7 +776,7 @@ appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
     webapi.Call('GET', urlServerUtil.TailorSearchUrl + "Feature=E0357B88-660D-40BE-AEE1-CB2024370E46&Latitude=" + $rootScope.latitude + "&Longitude=" + $rootScope.longitude + "&trend=1", "{}").success(function (data, status, headers, config) {
         $rootScope.TrendTailors = data;
     }).error(function (data) {
-        toastr.success('Trend-' + data);
+        toastr.error('Trend-' + data);
     });
     $('.navbar-absolute-bottom').show();;
     $scope.showActions = 0;
@@ -908,7 +882,7 @@ appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
             else {
                 tx.executeSql('Insert into wishlist values("' + $scope.usId + '","' + $scope.tailId + '","' + $scope.tName + '","' + $scope.address + '","' + $scope.rating + '","' + $scope.image + '")');
                 //toastr.success('Tailor added to your wishlist');
-                toastr.success('Tailor added to your wishlist');
+                toastr.error('Tailor added to your wishlist');
             }
         }
         $scope.wishList = { TailorID: "", UserID: "" };
@@ -918,7 +892,7 @@ appCtrl.controller('trend-ctrl', ['$scope', '$rootScope', 'webapi', function ($s
         webapi.Call('POST', urlServerUtil.WishListUrl, param).success(function (data, status, headers, config) {
             if (data == true) {
                 //toastr.success('Wish list saved');
-                toastr.success('Wish list saved');
+                toastr.error('Wish list saved');
             }
         }).error(function (data) {
             // toastr.success('AddtoWishList error-' + data);
@@ -935,9 +909,9 @@ appCtrl.controller('contactus-ctrl', ['$scope', '$rootScope', 'webapi', function
         });
         webapi.Call('POST', urlServerUtil.QueryUrl, param).success(function (data, status, headers, config) {
             $scope.Query = null;
-            toastr.success('Query Added Successfully');
+            toastr.error('Query Added Successfully');
         }).error(function (data) {
-            toastr.success('addDetail -' + data);
+            toastr.error('addDetail -' + data);
         });
     };
 }]);
