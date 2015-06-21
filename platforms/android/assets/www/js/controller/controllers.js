@@ -380,7 +380,7 @@ appCtrl.controller('location-ctrl', ['$scope', 'webapi', '$rootScope', function 
     }
     $scope.getNearByTailor = function () {
         if ($rootScope.latitude != '' && $rootScope.latitude != undefined && $rootScope.latitude != null) {
-            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1/1";
+            window.location.href = "#/tailorlisting/" + $rootScope.latitude + "/" + $rootScope.longitude + "/1/1/1";
         }
         else {
             toastr.success('Location Service is not enable in your mobile.');
