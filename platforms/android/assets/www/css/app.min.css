@@ -8530,50 +8530,126 @@ img {
 
 
 .tailor-listing.position-center .tailor-distance{
-  transform: translateX(0%);  
-  transition: transform 0.3s ease 0s;
+  
+  -ms-transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  -o-transform: translateY(0%);
+  transform: translateX(0%);
+
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
+
+  
 }
 
 .tailor-listing.position-center .tailor-details{
+  -ms-transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  -o-transform: translateX(0%);
   transform: translateX(0%);  
-  transition: transform 0.3s ease 0s;
+
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
 }
 
 .tailor-listing.position-center .tailor-deal-action{
+  -ms-transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  -o-transform: translateX(0%);
   transform: translateX(0%);
-  transition: transform 0.3s ease 0s;
+
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
 }
 
 
 .tailor-listing.position-left .tailor-distance{
-  transform: translateX(-20%);  
-  transition: transform 0.3s ease 0s;
+  -ms-transform: translateX(-20%);
+  -webkit-transform: translateX(-20%);
+  -moz-transform: translateX(-20%);
+  -o-transform: translateX(-20%);
+  transform: translateX(-20%); 
+
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
 }
 
 .tailor-listing.position-left .tailor-details{
-  transform: translateX(-25%);  
-  transition: transform 0.3s ease 0s;
+  -ms-transform: translateX(-25%);
+  -webkit-transform: translateX(-25%);
+  -moz-transform: translateX(-25%);
+  -o-transform: translateX(-25%);
+  transform: translateX(-25%); 
+  
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
 }
 
 .tailor-listing.position-left .tailor-deal-action{
-  transform: translateX(-100%);
-  transition: transform 0.3s ease 0s;
+  -ms-transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
+  -moz-transform: translateX(-100%);
+  -o-transform: translateX(-100%);
+  transform: translateX(-100%); 
+
+ -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
 }
 
 
 .tailor-listing.position-right .tailor-distance{
-  transition: transform 0.3s ease 0s;
-  transform: translateX(100%);
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
+  -ms-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  -moz-transform: translateX(100%);
+  -o-transform: translateX(100%);
+  transform: translateX(100%); 
+
 }
 
 .tailor-listing.position-right .tailor-details{
-  transition: transform 0.3s ease 0s;
-  transform: translateX(20%);
+-webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
+  -ms-transform: translateX(20%);
+  -webkit-transform: translateX(20%);
+  -moz-transform: translateX(20%);
+  -o-transform: translateX(20%);
+  transform: translateX(20%); 
+
 }
 
 .tailor-listing.position-right .tailor-deal-action{
-  transition: transform 0.3s ease 0s;
-  transform: translateX(0%);
+  -webkit-transition: -webkit-transform 0.3s ease 0s;
+   -moz-transition: -moz-transform 0.3s ease 0s;
+     -o-transition: -o-transform 0.3s ease 0s;
+        transition: transform 0.3s ease 0s;
+
+  -ms-transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  -o-transform: translateX(0%);
+  transform: translateX(0%); 
+
 }
 
 .position-left .deal-tag {
